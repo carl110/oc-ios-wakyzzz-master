@@ -40,7 +40,11 @@ class AlarmViewController: UIViewController, UITableViewDelegate, UITableViewDat
         tableView.delegate = self
         tableView.dataSource = self
         
-        datePicker.date = (alarm?.alarmDate)!
+        //set time on datepicker as 08:00
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat =  "HH:mm"
+        let date = dateFormatter.date(from: "08:00")
+        datePicker.date = date!
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
