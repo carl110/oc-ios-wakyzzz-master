@@ -17,6 +17,8 @@
 		0424EB6D20BF022900E15E46 /* AlarmTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0424EB6C20BF022900E15E46 /* AlarmTableViewCell.swift */; };
 		0424EB6F20BF0FAE00E15E46 /* AlarmViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0424EB6E20BF0FAE00E15E46 /* AlarmViewController.swift */; };
 		0424EB7120C038AE00E15E46 /* sound.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 0424EB7020C038AE00E15E46 /* sound.mp3 */; };
+		89BA115922C0C219007CF134 /* WakyZzz.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 89BA115722C0C219007CF134 /* WakyZzz.xcdatamodeld */; };
+		89BA115B22C0C230007CF134 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89BA115A22C0C230007CF134 /* CoreDataManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +34,8 @@
 		0424EB6C20BF022900E15E46 /* AlarmTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmTableViewCell.swift; sourceTree = "<group>"; };
 		0424EB6E20BF0FAE00E15E46 /* AlarmViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmViewController.swift; sourceTree = "<group>"; };
 		0424EB7020C038AE00E15E46 /* sound.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = sound.mp3; sourceTree = "<group>"; };
+		89BA115822C0C219007CF134 /* WakyZzz.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = WakyZzz.xcdatamodel; sourceTree = "<group>"; };
+		89BA115A22C0C230007CF134 /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,19 +68,61 @@
 		0424EB5220BEF89000E15E46 /* WakyZzz */ = {
 			isa = PBXGroup;
 			children = (
-				0424EB7020C038AE00E15E46 /* sound.mp3 */,
-				0424EB6820BEF93F00E15E46 /* Alarm.swift */,
-				0424EB6A20BEF96400E15E46 /* Action.swift */,
+				89BA115522C0C1C5007CF134 /* Sounds */,
+				89BA115122C0C16F007CF134 /* Model */,
+				89BA115322C0C18B007CF134 /* View */,
+				89BA115422C0C1A1007CF134 /* Custom View */,
+				89BA115622C0C1D1007CF134 /* Core Data */,
 				0424EB5320BEF89000E15E46 /* AppDelegate.swift */,
-				0424EB5520BEF89000E15E46 /* AlarmsViewController.swift */,
-				0424EB6C20BF022900E15E46 /* AlarmTableViewCell.swift */,
-				0424EB6E20BF0FAE00E15E46 /* AlarmViewController.swift */,
 				0424EB5720BEF89000E15E46 /* Main.storyboard */,
 				0424EB5A20BEF89100E15E46 /* Assets.xcassets */,
 				0424EB5C20BEF89100E15E46 /* LaunchScreen.storyboard */,
 				0424EB5F20BEF89100E15E46 /* Info.plist */,
 			);
 			path = WakyZzz;
+			sourceTree = "<group>";
+		};
+		89BA115122C0C16F007CF134 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				0424EB6820BEF93F00E15E46 /* Alarm.swift */,
+				0424EB6A20BEF96400E15E46 /* Action.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		89BA115322C0C18B007CF134 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				0424EB5520BEF89000E15E46 /* AlarmsViewController.swift */,
+				0424EB6E20BF0FAE00E15E46 /* AlarmViewController.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		89BA115422C0C1A1007CF134 /* Custom View */ = {
+			isa = PBXGroup;
+			children = (
+				0424EB6C20BF022900E15E46 /* AlarmTableViewCell.swift */,
+			);
+			path = "Custom View";
+			sourceTree = "<group>";
+		};
+		89BA115522C0C1C5007CF134 /* Sounds */ = {
+			isa = PBXGroup;
+			children = (
+				0424EB7020C038AE00E15E46 /* sound.mp3 */,
+			);
+			path = Sounds;
+			sourceTree = "<group>";
+		};
+		89BA115622C0C1D1007CF134 /* Core Data */ = {
+			isa = PBXGroup;
+			children = (
+				89BA115722C0C219007CF134 /* WakyZzz.xcdatamodeld */,
+				89BA115A22C0C230007CF134 /* CoreDataManager.swift */,
+			);
+			path = "Core Data";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -111,6 +157,7 @@
 				TargetAttributes = {
 					0424EB4F20BEF89000E15E46 = {
 						CreatedOnToolsVersion = 9.3.1;
+						LastSwiftMigration = 1020;
 					};
 				};
 			};
@@ -156,6 +203,8 @@
 				0424EB6F20BF0FAE00E15E46 /* AlarmViewController.swift in Sources */,
 				0424EB5420BEF89000E15E46 /* AppDelegate.swift in Sources */,
 				0424EB6B20BEF96400E15E46 /* Action.swift in Sources */,
+				89BA115922C0C219007CF134 /* WakyZzz.xcdatamodeld in Sources */,
+				89BA115B22C0C230007CF134 /* CoreDataManager.swift in Sources */,
 				0424EB6920BEF93F00E15E46 /* Alarm.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -308,7 +357,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.openclassrooms.WakyZzz;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
@@ -325,7 +374,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.openclassrooms.WakyZzz;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
@@ -352,6 +401,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		89BA115722C0C219007CF134 /* WakyZzz.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				89BA115822C0C219007CF134 /* WakyZzz.xcdatamodel */,
+			);
+			currentVersion = 89BA115822C0C219007CF134 /* WakyZzz.xcdatamodel */;
+			path = WakyZzz.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 0424EB4820BEF89000E15E46 /* Project object */;
 }
