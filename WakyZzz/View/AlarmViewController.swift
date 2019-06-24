@@ -85,10 +85,12 @@ class AlarmViewController: UIViewController, UITableViewDelegate, UITableViewDat
     
     @IBAction func doneButtonPress(_ sender: Any) {
         delegate?.alarmViewControllerDone(alarm: alarm!)
+        print ("save alarm date = \(alarm?.alarmDate) caption = \(alarm?.caption) enabled = \(alarm?.enabled) repeat dayas = \(alarm?.repeatDays) repeating = \(alarm?.repeating)")
         presentingViewController?.dismiss(animated: true, completion: nil)
     }
     @IBAction func datePickerValueChanged(_ sender: Any) {
         alarm?.setTime(date: datePicker.date)
+        print ("time selected \(datePicker.date)")
     }
     
 }

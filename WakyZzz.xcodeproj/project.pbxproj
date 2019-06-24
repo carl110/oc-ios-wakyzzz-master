@@ -74,7 +74,6 @@
 				89BA115422C0C1A1007CF134 /* Custom View */,
 				89BA115622C0C1D1007CF134 /* Core Data */,
 				0424EB5320BEF89000E15E46 /* AppDelegate.swift */,
-				0424EB5720BEF89000E15E46 /* Main.storyboard */,
 				0424EB5A20BEF89100E15E46 /* Assets.xcassets */,
 				0424EB5C20BEF89100E15E46 /* LaunchScreen.storyboard */,
 				0424EB5F20BEF89100E15E46 /* Info.plist */,
@@ -96,6 +95,7 @@
 			children = (
 				0424EB5520BEF89000E15E46 /* AlarmsViewController.swift */,
 				0424EB6E20BF0FAE00E15E46 /* AlarmViewController.swift */,
+				0424EB5720BEF89000E15E46 /* Main.storyboard */,
 			);
 			path = View;
 			sourceTree = "<group>";

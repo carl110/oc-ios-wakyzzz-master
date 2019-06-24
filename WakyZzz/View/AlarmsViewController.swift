@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AVFoundation
 
 class AlarmsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, AlarmCellDelegate, AlarmViewControllerDelegate {
     @IBOutlet weak var tableView: UITableView!
@@ -14,6 +15,8 @@ class AlarmsViewController: UIViewController, UITableViewDelegate, UITableViewDa
     var alarms = [Alarm]()
     var editingIndexPath: IndexPath?
     
+    private var alarmSound: AVAudioPlayer?
+    private var soundVolume: Float = 1
     @IBAction func addButtonPress(_ sender: Any) {
         presentAlarmViewController(alarm: nil)
     }
@@ -141,6 +144,22 @@ class AlarmsViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     func alarmViewControllerCancel() {
         editingIndexPath = nil
+    
+    }
+    
+    //first alarm sound
+    func playSound() {
+        let path = Bundle.main.path(forResource: "sound.mp3", ofType: nil)!
+        let url = URL(fileURLWithPath: path)
+        
+        do {
+            self.alarmSound = try AVAudioPlayer(contentsOf: url)
+            self.alarmSound?.play()
+            self.alarmSound?.volume = self.soundVolume
+        } catch {
+            print ("Unable to locate sound file")
+        }
+        
     }
 }
 
