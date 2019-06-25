@@ -8,8 +8,9 @@
 
 import UIKit
 import AVFoundation
+import UserNotifications
 
-class AlarmsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, AlarmCellDelegate, AlarmViewControllerDelegate {
+class AlarmsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UNUserNotificationCenterDelegate, AlarmCellDelegate, AlarmViewControllerDelegate {
     @IBOutlet weak var tableView: UITableView!
     
     var alarms = [Alarm]()
@@ -33,6 +34,10 @@ class AlarmsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         tableView.dataSource = self
         
         populateAlarms()
+        
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge], completionHandler: {didAllow, error in
+            
+        })
         
     }
     
@@ -72,6 +77,7 @@ class AlarmsViewController: UIViewController, UITableViewDelegate, UITableViewDa
             cell.populate(caption: alarm.caption, subcaption: alarm.repeating, enabled: alarm.enabled)
         }
         
+        
         return cell
     }
     
@@ -105,6 +111,17 @@ class AlarmsViewController: UIViewController, UITableViewDelegate, UITableViewDa
     func addAlarm(_ alarm: Alarm, at indexPath: IndexPath) {
         tableView.beginUpdates()
         alarms.insert(alarm, at: indexPath.row)
+        print ("adding alarms \(alarm.time)")
+        
+        let date = alarm.alarmDate
+        let calendar = Calendar.current
+        
+        let hour = calendar.component(.hour, from: date!)
+        let minutes = calendar.component(.minute, from: date!)
+        let seconds = calendar.component(.second, from: date!)
+        print("hours = \(hour):\(minutes):\(seconds)")
+        localNotification(hour: hour, minute: minutes)
+//        simpleAddNotification(hour: hour, minute: minutes, identifier: alarm.caption, title: alarm.caption, body: alarm.repeating)
         tableView.insertRows(at: [indexPath], with: .automatic)
         tableView.endUpdates()
     }
@@ -160,6 +177,83 @@ class AlarmsViewController: UIViewController, UITableViewDelegate, UITableViewDa
             print ("Unable to locate sound file")
         }
         
+    }
+    public func simpleAddNotification(hour: Int, minute: Int, identifier: String, title: String, body: String) {
+        
+        // Initialize User Notification Center Object
+        let center = UNUserNotificationCenter.current()
+        
+        // The content of the Notification
+        let content = UNMutableNotificationContent()
+        content.title = title
+        content.body = body
+        content.sound = .default
+        
+        // Define the custom actions.
+        let acceptAction = UNNotificationAction(identifier: "ACCEPT_ACTION",
+                                                title: "Accept",
+                                                options: UNNotificationActionOptions(rawValue: 0))
+        let declineAction = UNNotificationAction(identifier: "DECLINE_ACTION",
+                                                 title: "Decline",
+                                                 options: UNNotificationActionOptions(rawValue: 0))
+        
+        // The selected time to notify the user
+        var dateComponents = DateComponents()
+        dateComponents.calendar = Calendar.current
+        dateComponents.hour = hour
+        dateComponents.minute = minute
+        
+        // The time/repeat trigger
+        let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
+        
+        print ("triggered")
+        
+        // Initializing the Notification Request object to add to the Notification Center
+        let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
+        
+        // Adding the notification to the center
+        center.add(request) { (error) in
+            if (error) != nil {
+                print(error!.localizedDescription)
+            }
+        }
+    }
+    
+    func localNotification(hour: Int, minute: Int) {
+        //creating the notification content
+        let content = UNMutableNotificationContent()
+        
+        //adding title, subtitle, body and badge
+        content.title = "Hey this is Simplified iOS"
+        content.subtitle = "iOS Development is fun"
+        content.body = "We are learning about iOS Local Notification"
+        content.badge = 1
+        content.sound = UNNotificationSound.init(named: UNNotificationSoundName(rawValue: "sound.mp3"))
+        //getting the notification trigger
+        // The selected time to notify the user
+        var dateComponents = DateComponents()
+        dateComponents.calendar = Calendar.current
+        dateComponents.hour = hour
+        dateComponents.minute = minute
+        
+        // The time/repeat trigger
+        let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
+        
+        //getting the notification request
+        let request = UNNotificationRequest(identifier: "SimplifiedIOSNotification", content: content, trigger: trigger)
+        
+        UNUserNotificationCenter.current().delegate = self
+        
+        //adding the notification to notification center
+        UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
+        
+        print ("run local notification")
+    }
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        
+        //displaying the ios local notification when app is in foreground
+        completionHandler([.alert, .badge, .sound])
     }
 }
 

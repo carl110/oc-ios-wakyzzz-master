@@ -111,13 +111,13 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="time" minuteInterval="5" translatesAutoresizingMaskIntoConstraints="NO" id="yhU-rL-ath">
+                            <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="time" minuteInterval="1" useCurrentDate="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yhU-rL-ath">
                                 <rect key="frame" x="0.0" y="64" width="375" height="200"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="200" id="cbv-5e-JDX"/>
                                 </constraints>
-                                <date key="date" timeIntervalSinceReferenceDate="549470587.23124099">
-                                    <!--2018-05-31 14:43:07 +0000-->
+                                <date key="date" timeIntervalSinceReferenceDate="549442800.23124099">
+                                    <!--2018-05-31 07:00:00 +0000-->
                                 </date>
                                 <connections>
                                     <action selector="datePickerValueChanged:" destination="ZR4-jh-IrU" eventType="valueChanged" id="B2A-rL-BzN"/>

@@ -80,17 +80,21 @@ class AlarmViewController: UIViewController, UITableViewDelegate, UITableViewDat
     }
     
     @IBAction func cancelButtonPress(_ sender: Any) {
+        //go back to alarm view
         presentingViewController?.dismiss(animated: true, completion: nil)
     }
     
     @IBAction func doneButtonPress(_ sender: Any) {
+        
+        //add alarm as per date picker time
+        alarm?.setTime(date: datePicker.date)
         delegate?.alarmViewControllerDone(alarm: alarm!)
-        print ("save alarm date = \(alarm?.alarmDate) caption = \(alarm?.caption) enabled = \(alarm?.enabled) repeat dayas = \(alarm?.repeatDays) repeating = \(alarm?.repeating)")
+        
+        //go back to alarm view
         presentingViewController?.dismiss(animated: true, completion: nil)
     }
     @IBAction func datePickerValueChanged(_ sender: Any) {
-        alarm?.setTime(date: datePicker.date)
-        print ("time selected \(datePicker.date)")
+
     }
     
 }

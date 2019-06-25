@@ -17,6 +17,7 @@
 		0424EB6D20BF022900E15E46 /* AlarmTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0424EB6C20BF022900E15E46 /* AlarmTableViewCell.swift */; };
 		0424EB6F20BF0FAE00E15E46 /* AlarmViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0424EB6E20BF0FAE00E15E46 /* AlarmViewController.swift */; };
 		0424EB7120C038AE00E15E46 /* sound.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 0424EB7020C038AE00E15E46 /* sound.mp3 */; };
+		8977152922C0E71E00F69131 /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8977152822C0E71E00F69131 /* Notification.swift */; };
 		89BA115922C0C219007CF134 /* WakyZzz.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 89BA115722C0C219007CF134 /* WakyZzz.xcdatamodeld */; };
 		89BA115B22C0C230007CF134 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89BA115A22C0C230007CF134 /* CoreDataManager.swift */; };
 /* End PBXBuildFile section */
@@ -34,6 +35,7 @@
 		0424EB6C20BF022900E15E46 /* AlarmTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmTableViewCell.swift; sourceTree = "<group>"; };
 		0424EB6E20BF0FAE00E15E46 /* AlarmViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmViewController.swift; sourceTree = "<group>"; };
 		0424EB7020C038AE00E15E46 /* sound.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = sound.mp3; sourceTree = "<group>"; };
+		8977152822C0E71E00F69131 /* Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
 		89BA115822C0C219007CF134 /* WakyZzz.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = WakyZzz.xcdatamodel; sourceTree = "<group>"; };
 		89BA115A22C0C230007CF134 /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -68,6 +70,7 @@
 		0424EB5220BEF89000E15E46 /* WakyZzz */ = {
 			isa = PBXGroup;
 			children = (
+				8977152722C0E6FE00F69131 /* View Model */,
 				89BA115522C0C1C5007CF134 /* Sounds */,
 				89BA115122C0C16F007CF134 /* Model */,
 				89BA115322C0C18B007CF134 /* View */,
@@ -79,6 +82,14 @@
 				0424EB5F20BEF89100E15E46 /* Info.plist */,
 			);
 			path = WakyZzz;
+			sourceTree = "<group>";
+		};
+		8977152722C0E6FE00F69131 /* View Model */ = {
+			isa = PBXGroup;
+			children = (
+				8977152822C0E71E00F69131 /* Notification.swift */,
+			);
+			path = "View Model";
 			sourceTree = "<group>";
 		};
 		89BA115122C0C16F007CF134 /* Model */ = {
@@ -198,6 +209,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8977152922C0E71E00F69131 /* Notification.swift in Sources */,
 				0424EB5620BEF89000E15E46 /* AlarmsViewController.swift in Sources */,
 				0424EB6D20BF022900E15E46 /* AlarmTableViewCell.swift in Sources */,
 				0424EB6F20BF0FAE00E15E46 /* AlarmViewController.swift in Sources */,
