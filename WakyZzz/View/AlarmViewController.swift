@@ -57,6 +57,7 @@ class AlarmViewController: UIViewController, UITableViewDelegate, UITableViewDat
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "DayOfWeekCell", for: indexPath)
+        
         cell.textLabel?.text = Alarm.daysOfWeek[indexPath.row]
         cell.accessoryType = (alarm?.repeatDays[indexPath.row])! ? .checkmark : .none
         if (alarm?.repeatDays[indexPath.row])! {
