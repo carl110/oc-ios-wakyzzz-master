@@ -19,7 +19,7 @@ class CoreDataManager {
         return Singleton.instance
     }
     
-    func saveAlarm(time: Int16, enabled: Bool, sun: Bool, mon: Bool, tue: Bool, wed: Bool, thu: Bool, fri: Bool, sat: Bool) {
+    func saveAlarm(time: Int32, enabled: Bool, sun: Bool, mon: Bool, tue: Bool, wed: Bool, thu: Bool, fri: Bool, sat: Bool) {
         
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
             return
@@ -46,6 +46,30 @@ class CoreDataManager {
             let error = error as NSError
             fatalError("Could not save. \(error), \(error.userInfo)")
         }
+    }
+    
+    func fetchAlarmData() -> [DataForAlarms]? {
+        
+        let appDelegate =
+            UIApplication.shared.delegate as? AppDelegate
+        let managedContext = appDelegate!.persistentContainer.viewContext
+        
+        let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "WakyZzz")
+        
+        do {
+            let tasks = try managedContext.fetch(fetchRequest)
+            var taskObjects: [DataForAlarms] = []
+            
+            tasks.forEach { (taskObject) in
+                taskObjects.append(DataForAlarms(object: taskObject))
+            }
+            
+            return taskObjects
+        } catch let error as NSError {
+            print ("Could not fetch. \(error) \(error.userInfo)")
+            return nil
+        }
+        
     }
     
 }

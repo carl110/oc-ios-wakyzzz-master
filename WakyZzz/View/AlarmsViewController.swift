@@ -27,6 +27,7 @@ class AlarmsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         config()
+        loadAlarms()
     }
     
     func config() {
@@ -34,12 +35,29 @@ class AlarmsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         tableView.delegate = self
         tableView.dataSource = self
         
-        populateAlarms()
+//        populateAlarms()
         
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge], completionHandler: {didAllow, error in
             
         })
         
+    }
+    
+    func loadAlarms() {
+        let fetchedData = CoreDataManager.shared.fetchAlarmData()
+        
+        for i in fetchedData! {
+            var alarm: Alarm
+            alarm = Alarm()
+            
+            alarm.time = Int(i.time)
+            
+            alarm.enabled = i.enabled
+            
+            alarm.repeatDays = [i.sun, i.mon, i.tue, i.wed, i.thu, i.fri, i.sat]
+            
+            alarms.append(alarm)
+        }
     }
     
     func populateAlarms() {
@@ -133,9 +151,8 @@ class AlarmsViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 weekDay += 1
             }
         }
-        
 //        print ("core data save  \(alarm.time)--\(alarm.enabled)--\(alarm.repeatDays[0])--\(alarm.repeatDays[1])")
-        CoreDataManager.shared.saveAlarm(time: Int16(alarm.time), enabled: alarm.enabled, sun: alarm.repeatDays[0], mon: alarm.repeatDays[1], tue: alarm.repeatDays[2], wed: alarm.repeatDays[3], thu: alarm.repeatDays[4], fri: alarm.repeatDays[5], sat: alarm.repeatDays[6])
+        CoreDataManager.shared.saveAlarm(time: Int32(alarm.time), enabled: alarm.enabled, sun: alarm.repeatDays[0], mon: alarm.repeatDays[1], tue: alarm.repeatDays[2], wed: alarm.repeatDays[3], thu: alarm.repeatDays[4], fri: alarm.repeatDays[5], sat: alarm.repeatDays[6])
         
         tableView.insertRows(at: [indexPath], with: .automatic)
         tableView.endUpdates()
