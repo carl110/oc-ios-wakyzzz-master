@@ -56,6 +56,10 @@ class CoreDataManager {
         
         let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "WakyZzz")
         
+        //sort fetch by time
+        let sort = NSSortDescriptor(key: #keyPath(WakyZzz.time), ascending: true)
+        fetchRequest.sortDescriptors = [sort]
+        
         do {
             let alarms = try managedContext.fetch(fetchRequest)
             var alarmObjects: [DataForAlarms] = []

@@ -88,16 +88,15 @@ class AlarmViewController: UIViewController, UITableViewDelegate, UITableViewDat
     @IBAction func doneButtonPress(_ sender: Any) {
 
         let checkAlarms = CoreDataManager.shared.fetchIndividualAlarm(time: getTime(date: datePicker.date))
-//
+
+        //if alarm exists just update alarm
         if (checkAlarms?.count)! > 0 {
-            print ("found")
             //update changes to alarm
-        } else {
-            //if not alarm found create new
-            //add alarm as per date picker time
-            alarm?.setTime(date: datePicker.date)
-            delegate?.alarmViewControllerDone(alarm: alarm!)
+            CoreDataManager.shared.updateAlarmRepeatDays(time: getTime(date: datePicker.date), sun: alarm!.repeatDays[0], mon: alarm!.repeatDays[1], tue: alarm!.repeatDays[2], wed: alarm!.repeatDays[3], thu: alarm!.repeatDays[4], fri: alarm!.repeatDays[5], sat: alarm!.repeatDays[6])
         }
+        //add alarm as per date picker time
+        alarm?.setTime(date: datePicker.date)
+        delegate?.alarmViewControllerDone(alarm: alarm!)
         
 
         

@@ -151,7 +151,7 @@ class AlarmsViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 weekDay += 1
             }
         }
-//        print ("core data save  \(alarm.time)--\(alarm.enabled)--\(alarm.repeatDays[0])--\(alarm.repeatDays[1])")
+
         CoreDataManager.shared.saveAlarm(time: Int32(alarm.time), enabled: alarm.enabled, sun: alarm.repeatDays[0], mon: alarm.repeatDays[1], tue: alarm.repeatDays[2], wed: alarm.repeatDays[3], thu: alarm.repeatDays[4], fri: alarm.repeatDays[5], sat: alarm.repeatDays[6])
         
         tableView.insertRows(at: [indexPath], with: .automatic)
