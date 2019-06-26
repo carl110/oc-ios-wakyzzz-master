@@ -57,14 +57,14 @@ class CoreDataManager {
         let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "WakyZzz")
         
         do {
-            let tasks = try managedContext.fetch(fetchRequest)
-            var taskObjects: [DataForAlarms] = []
+            let alarms = try managedContext.fetch(fetchRequest)
+            var alarmObjects: [DataForAlarms] = []
             
-            tasks.forEach { (taskObject) in
-                taskObjects.append(DataForAlarms(object: taskObject))
+            alarms.forEach { (alarmObject) in
+                alarmObjects.append(DataForAlarms(object: alarmObject))
             }
             
-            return taskObjects
+            return alarmObjects
         } catch let error as NSError {
             print ("Could not fetch. \(error) \(error.userInfo)")
             return nil
@@ -72,4 +72,92 @@ class CoreDataManager {
         
     }
     
+    func fetchIndividualAlarm(time: Int32) -> [DataForAlarms]? {
+        //Fetch data for selected time
+        let appDelegate =
+            UIApplication.shared.delegate as? AppDelegate
+        let managedContext = appDelegate!.persistentContainer.viewContext
+        
+        let predicate = NSPredicate(format: "time = %i", time)
+        let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "WakyZzz")
+        fetchRequest.predicate = predicate
+        
+        do {
+            let alarms = try managedContext.fetch(fetchRequest)
+            var alarmObjects: [DataForAlarms] = []
+            
+            alarms.forEach { (alarmObject) in
+                alarmObjects.append(DataForAlarms(object: alarmObject))
+            }
+            
+            return alarmObjects
+        } catch let error as NSError {
+            print ("Could not fetch. \(error) \(error.userInfo)")
+            return nil
+        }
+    }
+    
+    func deleteAlarm(time: Int32) {
+        let appDelegate =
+            UIApplication.shared.delegate as? AppDelegate
+        let managedContext = appDelegate!.persistentContainer.viewContext
+        
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "WakyZzz")
+        
+        let predicate = NSPredicate(format: "time = %i", time)
+        
+        fetchRequest.predicate = predicate
+        do{
+            let result = try managedContext.fetch(fetchRequest)
+            
+            if result.count > 0{
+                for object in result {
+                    managedContext.delete(object as! NSManagedObject)
+                }
+                do {
+                    try managedContext.save()
+                }
+            }
+        }catch {
+            let error = error as NSError
+            fatalError("Could not delete. \(error), \(error.userInfo)")
+        }
+    }
+    
+    func  updateAlarmRepeatDays(time: Int32, sun: Bool, mon: Bool, tue: Bool, wed: Bool, thu: Bool, fri: Bool, sat: Bool) {
+        //Update data held in coredata
+        let appDelegate =
+            UIApplication.shared.delegate as? AppDelegate
+        let managedContext = appDelegate!.persistentContainer.viewContext
+        
+        let predicate = NSPredicate(format: "time = %i", time)
+        let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "WakyZzz")
+        fetchRequest.predicate = predicate
+        
+        do {
+            let alarms = try managedContext.fetch(fetchRequest)
+            if let alarm = alarms.last {
+                
+                alarm.setValue(sun, forKey: "repeatSun")
+                alarm.setValue(mon, forKey: "repeatMon")
+                alarm.setValue(tue, forKey: "repeatTue")
+                alarm.setValue(wed, forKey: "repeatWed")
+                alarm.setValue(thu, forKey: "repeatThu")
+                alarm.setValue(fri, forKey: "repeatFri")
+                alarm.setValue(sat, forKey: "repeatSat")
+                
+                do {
+                    try managedContext.save()
+                    
+                } catch {
+                    let error = error as NSError
+                    fatalError("Could not save. \(error), \(error.userInfo)")
+                }
+            }
+        } catch let error as NSError {
+            print ("Could not fetch. \(error). \(error.userInfo)")
+        }
+    }
 }
+
+
