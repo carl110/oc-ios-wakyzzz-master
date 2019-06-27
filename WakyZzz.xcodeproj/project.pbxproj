@@ -20,6 +20,7 @@
 		89318EC622C2417A004205F4 /* String+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89318EC522C2417A004205F4 /* String+extensions.swift */; };
 		89318EC822C25B50004205F4 /* DataForAlarms.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89318EC722C25B50004205F4 /* DataForAlarms.swift */; };
 		89318ECA22C39A9B004205F4 /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89318EC922C39A9B004205F4 /* UIViewController.swift */; };
+		89318ECC22C3A5B9004205F4 /* Date+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89318ECB22C3A5B9004205F4 /* Date+extensions.swift */; };
 		8977152922C0E71E00F69131 /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8977152822C0E71E00F69131 /* Notification.swift */; };
 		89BA115922C0C219007CF134 /* WakyZzz.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 89BA115722C0C219007CF134 /* WakyZzz.xcdatamodeld */; };
 		89BA115B22C0C230007CF134 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89BA115A22C0C230007CF134 /* CoreDataManager.swift */; };
@@ -41,6 +42,7 @@
 		89318EC522C2417A004205F4 /* String+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+extensions.swift"; sourceTree = "<group>"; };
 		89318EC722C25B50004205F4 /* DataForAlarms.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataForAlarms.swift; sourceTree = "<group>"; };
 		89318EC922C39A9B004205F4 /* UIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewController.swift; sourceTree = "<group>"; };
+		89318ECB22C3A5B9004205F4 /* Date+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+extensions.swift"; sourceTree = "<group>"; };
 		8977152822C0E71E00F69131 /* Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
 		89BA115822C0C219007CF134 /* WakyZzz.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = WakyZzz.xcdatamodel; sourceTree = "<group>"; };
 		89BA115A22C0C230007CF134 /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
@@ -96,6 +98,7 @@
 			children = (
 				89318EC522C2417A004205F4 /* String+extensions.swift */,
 				89318EC922C39A9B004205F4 /* UIViewController.swift */,
+				89318ECB22C3A5B9004205F4 /* Date+extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -234,6 +237,7 @@
 				89318EC622C2417A004205F4 /* String+extensions.swift in Sources */,
 				0424EB5420BEF89000E15E46 /* AppDelegate.swift in Sources */,
 				0424EB6B20BEF96400E15E46 /* Action.swift in Sources */,
+				89318ECC22C3A5B9004205F4 /* Date+extensions.swift in Sources */,
 				89BA115922C0C219007CF134 /* WakyZzz.xcdatamodeld in Sources */,
 				89BA115B22C0C230007CF134 /* CoreDataManager.swift in Sources */,
 				0424EB6920BEF93F00E15E46 /* Alarm.swift in Sources */,

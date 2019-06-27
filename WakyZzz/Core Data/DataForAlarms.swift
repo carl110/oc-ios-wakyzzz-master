@@ -21,6 +21,7 @@ class DataForAlarms {
     var thu: Bool
     var fri: Bool
     var sat: Bool
+    var identifier: String
     
     init(object: NSManagedObject) {
         self.time = object.value(forKey: "time") as! Int32
@@ -32,5 +33,6 @@ class DataForAlarms {
         self.thu = object.value(forKey: "repeatThu") as! Bool
         self.fri = object.value(forKey: "repeatFri") as! Bool
         self.sat = object.value(forKey: "repeatSat") as! Bool
+        self.identifier = object.value(forKey: "identifier") as! String
     }
 }

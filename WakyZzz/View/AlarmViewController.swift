@@ -19,6 +19,7 @@ class AlarmViewController: UIViewController, UITableViewDelegate, UITableViewDat
     @IBOutlet weak var datePicker: UIDatePicker!
     @IBOutlet weak var tableView: UITableView!
     var alarm: Alarm?
+    private let date = Date()
     
     var delegate: AlarmViewControllerDelegate?
     
@@ -40,11 +41,11 @@ class AlarmViewController: UIViewController, UITableViewDelegate, UITableViewDat
         tableView.delegate = self
         tableView.dataSource = self
         
-        //set time on datepicker as 08:00
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat =  "HH:mm"
-        let date = dateFormatter.date(from: "08:00")
-        datePicker.date = date!
+//        //set time on datepicker as 08:00
+//        let dateFormatter = DateFormatter()
+//        dateFormatter.dateFormat =  "HH:mm"
+//        let date = dateFormatter.date(from: "08:00")
+//        datePicker.date = date!
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -86,13 +87,19 @@ class AlarmViewController: UIViewController, UITableViewDelegate, UITableViewDat
     }
     
     @IBAction func doneButtonPress(_ sender: Any) {
+        
+//        let alarmcheck = CoreDataManager.shared.fetchAlarmFromID(ID: date.string(format: "<#T##String#>"))
 
         let checkAlarms = CoreDataManager.shared.fetchIndividualAlarm(time: getTime(date: datePicker.date))
 
         //if alarm exists just update alarm
         if (checkAlarms?.count)! > 0 {
+            print ("found alarm")
             //update changes to alarm
             CoreDataManager.shared.updateAlarmRepeatDays(time: getTime(date: datePicker.date), sun: alarm!.repeatDays[0], mon: alarm!.repeatDays[1], tue: alarm!.repeatDays[2], wed: alarm!.repeatDays[3], thu: alarm!.repeatDays[4], fri: alarm!.repeatDays[5], sat: alarm!.repeatDays[6])
+        } else {
+            print ("No alarm ")
+            CoreDataManager.shared.saveAlarm(time: getTime(date: datePicker.date), enabled: alarm!.enabled, sun: alarm!.repeatDays[0], mon: alarm!.repeatDays[1], tue: alarm!.repeatDays[2], wed: alarm!.repeatDays[3], thu: alarm!.repeatDays[4], fri: alarm!.repeatDays[5], sat: alarm!.repeatDays[6], identifier: alarm!.identifier)
         }
         //add alarm as per date picker time
         alarm?.setTime(date: datePicker.date)

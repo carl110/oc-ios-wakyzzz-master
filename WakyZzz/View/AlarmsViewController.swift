@@ -14,7 +14,19 @@ import CoreData
 class AlarmsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UNUserNotificationCenterDelegate, AlarmCellDelegate, AlarmViewControllerDelegate {
     @IBOutlet weak var tableView: UITableView!
     
+    let alarmViewController = AlarmViewController()
+    
     var alarms = [Alarm]()
+//    {
+//        didSet {
+//            alarms = alarms.sorted(by: { (first, second) -> Bool in
+//                return first.time < second.time
+//            })
+//        }
+//    }
+    
+    
+    
     var editingIndexPath: IndexPath?
     
     private var alarmSound: AVAudioPlayer?
@@ -117,14 +129,23 @@ class AlarmsViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     func deleteAlarm(at indexPath: IndexPath) {
         tableView.beginUpdates()
-//        alarms.remove(at: alarms.count)
+        
+        //remove from coredata
+        CoreDataManager.shared.deleteAlarm(id: alarm(at: indexPath)!.identifier)
+
+        //remove from array then table
+        alarms.remove(at: indexPath.row)
         tableView.deleteRows(at: [indexPath], with: .automatic)
         tableView.endUpdates()
+        
+        
     }
     
     func editAlarm(at indexPath: IndexPath) {
         editingIndexPath = indexPath
         presentAlarmViewController(alarm: alarm(at: indexPath))
+        //            self.alarmViewController.datePicker.date = (self.alarm(at: indexPath)?.alarmDate)!
+
     }
     
     func addAlarm(_ alarm: Alarm, at indexPath: IndexPath) {
@@ -152,7 +173,7 @@ class AlarmsViewController: UIViewController, UITableViewDelegate, UITableViewDa
             }
         }
 
-        CoreDataManager.shared.saveAlarm(time: Int32(alarm.time), enabled: alarm.enabled, sun: alarm.repeatDays[0], mon: alarm.repeatDays[1], tue: alarm.repeatDays[2], wed: alarm.repeatDays[3], thu: alarm.repeatDays[4], fri: alarm.repeatDays[5], sat: alarm.repeatDays[6])
+
         
         tableView.insertRows(at: [indexPath], with: .automatic)
         tableView.endUpdates()
@@ -246,7 +267,7 @@ class AlarmsViewController: UIViewController, UITableViewDelegate, UITableViewDa
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         
         //displaying the ios local notification when app is in foreground
-        completionHandler([.alert, .badge, .sound])
+        completionHandler([.alert, .sound])
     }
     
 }

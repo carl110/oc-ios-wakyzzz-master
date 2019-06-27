@@ -15,6 +15,7 @@ class Alarm {
     var time = 8 * 360
     var repeatDays = [false, false, false, false, false, false, false]
     var enabled = true
+    var identifier = Date().string(format: "MMMddyyyyhhmmss")
     
     var alarmDate: Date? {
         let date = Date()

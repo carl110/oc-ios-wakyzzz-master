@@ -19,7 +19,7 @@ class CoreDataManager {
         return Singleton.instance
     }
     
-    func saveAlarm(time: Int32, enabled: Bool, sun: Bool, mon: Bool, tue: Bool, wed: Bool, thu: Bool, fri: Bool, sat: Bool) {
+    func saveAlarm(time: Int32, enabled: Bool, sun: Bool, mon: Bool, tue: Bool, wed: Bool, thu: Bool, fri: Bool, sat: Bool, identifier: String) {
         
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
             return
@@ -39,6 +39,7 @@ class CoreDataManager {
         managedObject.setValue(thu, forKey: "repeatThu")
         managedObject.setValue(fri, forKey: "repeatFri")
         managedObject.setValue(sat, forKey: "repeatSat")
+        managedObject.setValue(identifier, forKey: "identifier")
         
         do {
             try managedContext.save()
@@ -101,14 +102,39 @@ class CoreDataManager {
         }
     }
     
-    func deleteAlarm(time: Int32) {
+    func fetchAlarmFromID(id: String) -> [DataForAlarms]? {
+        //Fetch data for selected time
+        let appDelegate =
+            UIApplication.shared.delegate as? AppDelegate
+        let managedContext = appDelegate!.persistentContainer.viewContext
+        
+        let predicate = NSPredicate(format: "identifier = %@", id)
+        let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "WakyZzz")
+        fetchRequest.predicate = predicate
+        
+        do {
+            let alarms = try managedContext.fetch(fetchRequest)
+            var alarmObjects: [DataForAlarms] = []
+            
+            alarms.forEach { (alarmObject) in
+                alarmObjects.append(DataForAlarms(object: alarmObject))
+            }
+            
+            return alarmObjects
+        } catch let error as NSError {
+            print ("Could not fetch. \(error) \(error.userInfo)")
+            return nil
+        }
+    }
+    
+    func deleteAlarm(id: String) {
         let appDelegate =
             UIApplication.shared.delegate as? AppDelegate
         let managedContext = appDelegate!.persistentContainer.viewContext
         
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "WakyZzz")
         
-        let predicate = NSPredicate(format: "time = %i", time)
+        let predicate = NSPredicate(format: "identifier = %@", id)
         
         fetchRequest.predicate = predicate
         do{
