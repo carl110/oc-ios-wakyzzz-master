@@ -11,9 +11,11 @@ import UIKit
 
 extension Date {
     
+    //set date as string
     func string(format: String) -> String {
         let formatter = DateFormatter()
         formatter.dateFormat = format
         return formatter.string(from: self)
     }
 }
+

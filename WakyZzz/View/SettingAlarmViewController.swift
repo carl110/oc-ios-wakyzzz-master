@@ -14,19 +14,25 @@ protocol AlarmViewControllerDelegate {
     func alarmViewControllerCancel()
 }
 
-class AlarmViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class SettingAlarmViewController: UIViewController, UITableViewDelegate, UITableViewDataSource{
     
-    @IBOutlet weak var datePicker: UIDatePicker!
-    @IBOutlet weak var tableView: UITableView!
+    
     var alarm: Alarm?
     private let date = Date()
     
     var delegate: AlarmViewControllerDelegate?
+
+    
+    
+    @IBOutlet weak var datePicker: UIDatePicker!
+    @IBOutlet weak var tableView: UITableView!
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         config()
+//        alarmsViewController.editAlarmDelegate = self
     }
     
     func config() {        
@@ -41,11 +47,13 @@ class AlarmViewController: UIViewController, UITableViewDelegate, UITableViewDat
         tableView.delegate = self
         tableView.dataSource = self
         
-//        //set time on datepicker as 08:00
-//        let dateFormatter = DateFormatter()
-//        dateFormatter.dateFormat =  "HH:mm"
-//        let date = dateFormatter.date(from: "08:00")
-//        datePicker.date = date!
+        //if adding new alarm set datepicker time to 08:00 or to the alarm time
+        if alarm?.time == 2880 {
+            datePicker.setNewDate(from: "08:00", format: "HH:mm")
+        } else {
+
+            datePicker.date = (alarm?.alarmDate)!
+        }
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {

@@ -14,13 +14,37 @@ import CoreData
 class AlarmsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UNUserNotificationCenterDelegate, AlarmCellDelegate, AlarmViewControllerDelegate {
     @IBOutlet weak var tableView: UITableView!
     
-    let alarmViewController = AlarmViewController()
+    let settingAlarmViewController = SettingAlarmViewController()
     
     var alarms = [Alarm]()
 //    {
 //        didSet {
+//
+//            print ("didset")
 //            alarms = alarms.sorted(by: { (first, second) -> Bool in
-//                return first.time < second.time
+//
+//                let sortByDate = Calendar.current.compare(first.alarmDate ?? Date(), to: second.alarmDate ?? Date(), toGranularity: .minute)
+//
+//
+//
+//                switch sortByDate {
+//
+//                case .orderedDescending:
+//                    first < second
+//                    return true
+//
+//                default:
+//                    print ("default")
+//                    return false
+////                case .orderedSame:
+////
+////                    print ("order 2")
+////                    return false
+////                case .orderedDescending:
+////                    print ("order 3")
+////                    return false
+//                }
+////                return first.time < second.time
 //            })
 //        }
 //    }
@@ -196,9 +220,9 @@ class AlarmsViewController: UIViewController, UITableViewDelegate, UITableViewDa
     func presentAlarmViewController(alarm: Alarm?) {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let popupViewController = storyboard.instantiateViewController(withIdentifier: "DetailNavigationController") as! UINavigationController
-        let alarmViewController = popupViewController.viewControllers[0] as! AlarmViewController
-        alarmViewController.alarm = alarm
-        alarmViewController.delegate = self
+        let settingAlarmViewController = popupViewController.viewControllers[0] as! SettingAlarmViewController
+        settingAlarmViewController.alarm = alarm
+        settingAlarmViewController.delegate = self
         present(popupViewController, animated: true, completion: nil)
     }
     
