@@ -18,8 +18,11 @@ class AlarmsViewController: UIViewController, UITableViewDelegate, UITableViewDa
 
     private var alarms = [Alarm]()
     {
+
         //sort the array by date
         didSet {
+            
+            print ("didset running")
             let inputFormatter = DateFormatter()
             inputFormatter.timeZone = TimeZone(abbreviation: "GMT+0:00")
             inputFormatter.dateFormat = "HH:mm"
@@ -62,17 +65,14 @@ class AlarmsViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     func loadAlarms() {
         let fetchedData = CoreDataManager.shared.fetchAlarmData()
-        
+        //run through alarms saved and add to array
         for i in fetchedData! {
             var alarm: Alarm
             alarm = Alarm()
-            
             alarm.time = Int(i.time)
-            
             alarm.enabled = i.enabled
-            
             alarm.repeatDays = [i.sun, i.mon, i.tue, i.wed, i.thu, i.fri, i.sat]
-            
+            alarm.identifier = i.identifier
             alarms.append(alarm)
         }
     }
@@ -147,6 +147,8 @@ class AlarmsViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     func editAlarm(at indexPath: IndexPath) {
+        
+        print ("edit alarm \(alarm(at: indexPath)?.identifier)")
         editingIndexPath = indexPath
         presentAlarmViewController(alarm: alarm(at: indexPath))
 
@@ -206,6 +208,8 @@ class AlarmsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         present(popupViewController, animated: true, completion: nil)
     }
     
+    
+    //***************************************************************************
     func alarmViewControllerDone(alarm: Alarm) {
         if let editingIndexPath = editingIndexPath {
             tableView.reloadRows(at: [editingIndexPath], with: .automatic)

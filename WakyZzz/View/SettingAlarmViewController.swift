@@ -94,23 +94,21 @@ class SettingAlarmViewController: UIViewController, UITableViewDelegate, UITable
     }
     
     @IBAction func doneButtonPress(_ sender: Any) {
-        
-//        let alarmcheck = CoreDataManager.shared.fetchAlarmFromID(ID: date.string(format: "<#T##String#>"))
 
-        let checkAlarms = CoreDataManager.shared.fetchIndividualAlarm(time: getTime(date: datePicker.date))
+        let checkAlarms = CoreDataManager.shared.fetchAlarmFromID(id: alarm!.identifier)
 
         //if alarm exists just update alarm
         if (checkAlarms?.count)! > 0 {
-            print ("found alarm")
             //update changes to alarm
-            CoreDataManager.shared.updateAlarmRepeatDays(time: getTime(date: datePicker.date), sun: alarm!.repeatDays[0], mon: alarm!.repeatDays[1], tue: alarm!.repeatDays[2], wed: alarm!.repeatDays[3], thu: alarm!.repeatDays[4], fri: alarm!.repeatDays[5], sat: alarm!.repeatDays[6])
+            CoreDataManager.shared.updateAlarmRepeatDays(id: alarm!.identifier, time: getTime(date: datePicker.date), sun: alarm!.repeatDays[0], mon: alarm!.repeatDays[1], tue: alarm!.repeatDays[2], wed: alarm!.repeatDays[3], thu: alarm!.repeatDays[4], fri: alarm!.repeatDays[5], sat: alarm!.repeatDays[6])
         } else {
-            print ("No alarm ")
             CoreDataManager.shared.saveAlarm(time: getTime(date: datePicker.date), enabled: alarm!.enabled, sun: alarm!.repeatDays[0], mon: alarm!.repeatDays[1], tue: alarm!.repeatDays[2], wed: alarm!.repeatDays[3], thu: alarm!.repeatDays[4], fri: alarm!.repeatDays[5], sat: alarm!.repeatDays[6], identifier: alarm!.identifier)
+            //add alarm as per date picker time
+            alarm?.setTime(date: datePicker.date)
+            delegate?.alarmViewControllerDone(alarm: alarm!)
         }
-        //add alarm as per date picker time
-        alarm?.setTime(date: datePicker.date)
-        delegate?.alarmViewControllerDone(alarm: alarm!)
+
+        
         
 
         

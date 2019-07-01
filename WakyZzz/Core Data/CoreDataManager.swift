@@ -154,13 +154,13 @@ class CoreDataManager {
         }
     }
     
-    func  updateAlarmRepeatDays(time: Int32, sun: Bool, mon: Bool, tue: Bool, wed: Bool, thu: Bool, fri: Bool, sat: Bool) {
+    func  updateAlarmRepeatDays(id: String, time: Int32, sun: Bool, mon: Bool, tue: Bool, wed: Bool, thu: Bool, fri: Bool, sat: Bool) {
         //Update data held in coredata
         let appDelegate =
             UIApplication.shared.delegate as? AppDelegate
         let managedContext = appDelegate!.persistentContainer.viewContext
         
-        let predicate = NSPredicate(format: "time = %i", time)
+        let predicate = NSPredicate(format: "identifier = %@", id)
         let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "WakyZzz")
         fetchRequest.predicate = predicate
         
@@ -168,6 +168,7 @@ class CoreDataManager {
             let alarms = try managedContext.fetch(fetchRequest)
             if let alarm = alarms.last {
                 
+                alarm.setValue(time, forKey: "time")
                 alarm.setValue(sun, forKey: "repeatSun")
                 alarm.setValue(mon, forKey: "repeatMon")
                 alarm.setValue(tue, forKey: "repeatTue")
