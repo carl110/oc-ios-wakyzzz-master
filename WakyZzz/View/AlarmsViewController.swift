@@ -18,10 +18,8 @@ class AlarmsViewController: UIViewController, UITableViewDelegate, UITableViewDa
 
     private var alarms = [Alarm]()
     {
-
         //sort the array by date
         didSet {
-            
             print ("didset running")
             let inputFormatter = DateFormatter()
             inputFormatter.timeZone = TimeZone(abbreviation: "GMT+0:00")
@@ -49,18 +47,12 @@ class AlarmsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         config()
         loadAlarms()
     }
-    
+
     func config() {
-        
         tableView.delegate = self
         tableView.dataSource = self
-        
-//        populateAlarms()
-        
-        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge], completionHandler: {didAllow, error in
-            
-        })
-        
+//        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge], completionHandler: {didAllow, error in
+//        })
     }
     
     func loadAlarms() {
@@ -76,28 +68,7 @@ class AlarmsViewController: UIViewController, UITableViewDelegate, UITableViewDa
             alarms.append(alarm)
         }
     }
-    
-    func populateAlarms() {
-        
-        var alarm: Alarm
-        
-        // Weekdays 5am
-        alarm = Alarm()
-        alarm.time = 5 * 3600
-        for i in 1 ... 5 {
-            alarm.repeatDays[i] = true
-        }
-        alarms.append(alarm)
-        
-        // Weekend 9am
-        alarm = Alarm()
-        alarm.time = 9 * 3600
-        alarm.enabled = false
-        alarm.repeatDays[0] = true
-        alarm.repeatDays[6] = true
-        alarms.append(alarm)
-    }
-    
+
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
@@ -112,8 +83,6 @@ class AlarmsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         if let alarm = alarm(at: indexPath) {
             cell.populate(caption: alarm.caption, subcaption: alarm.repeating, enabled: alarm.enabled)
         }
-        
-        
         return cell
     }
     
@@ -147,17 +116,13 @@ class AlarmsViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     func editAlarm(at indexPath: IndexPath) {
-        
-        print ("edit alarm \(alarm(at: indexPath)?.identifier)")
         editingIndexPath = indexPath
         presentAlarmViewController(alarm: alarm(at: indexPath))
-
     }
     
     func addAlarm(_ alarm: Alarm, at indexPath: IndexPath) {
         tableView.beginUpdates()
         alarms.insert(alarm, at: indexPath.row)
-        
         
         let date = alarm.alarmDate
         let calendar = Calendar.current
@@ -178,9 +143,6 @@ class AlarmsViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 weekDay += 1
             }
         }
-
-
-        
         tableView.insertRows(at: [indexPath], with: .automatic)
         tableView.endUpdates()
     }
@@ -208,13 +170,13 @@ class AlarmsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         present(popupViewController, animated: true, completion: nil)
     }
     
-    
-    //***************************************************************************
     func alarmViewControllerDone(alarm: Alarm) {
-        if let editingIndexPath = editingIndexPath {
-            tableView.reloadRows(at: [editingIndexPath], with: .automatic)
+        //if edited alarm
+        if editingIndexPath != nil {
+            //recall didset to reorder values
+            self.alarms = {self.alarms}()
         }
-        else {
+        else { //if new alarm add to table
             addAlarm(alarm, at: IndexPath(row: alarms.count, section: 0))
         }
         editingIndexPath = nil
@@ -222,7 +184,6 @@ class AlarmsViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     func alarmViewControllerCancel() {
         editingIndexPath = nil
-        
     }
     
     //first alarm sound

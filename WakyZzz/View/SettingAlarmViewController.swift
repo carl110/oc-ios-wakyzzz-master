@@ -103,15 +103,13 @@ class SettingAlarmViewController: UIViewController, UITableViewDelegate, UITable
             CoreDataManager.shared.updateAlarmRepeatDays(id: alarm!.identifier, time: getTime(date: datePicker.date), sun: alarm!.repeatDays[0], mon: alarm!.repeatDays[1], tue: alarm!.repeatDays[2], wed: alarm!.repeatDays[3], thu: alarm!.repeatDays[4], fri: alarm!.repeatDays[5], sat: alarm!.repeatDays[6])
         } else {
             CoreDataManager.shared.saveAlarm(time: getTime(date: datePicker.date), enabled: alarm!.enabled, sun: alarm!.repeatDays[0], mon: alarm!.repeatDays[1], tue: alarm!.repeatDays[2], wed: alarm!.repeatDays[3], thu: alarm!.repeatDays[4], fri: alarm!.repeatDays[5], sat: alarm!.repeatDays[6], identifier: alarm!.identifier)
-            //add alarm as per date picker time
-            alarm?.setTime(date: datePicker.date)
-            delegate?.alarmViewControllerDone(alarm: alarm!)
+
         }
+        
+        //add alarm as per date picker time
+        alarm?.setTime(date: datePicker.date)
+        delegate?.alarmViewControllerDone(alarm: alarm!)
 
-        
-        
-
-        
         //go back to alarm view
         presentingViewController?.dismiss(animated: true, completion: nil)
     }
