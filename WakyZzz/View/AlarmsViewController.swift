@@ -14,44 +14,25 @@ import CoreData
 class AlarmsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UNUserNotificationCenterDelegate, AlarmCellDelegate, AlarmViewControllerDelegate {
     @IBOutlet weak var tableView: UITableView!
     
-    let settingAlarmViewController = SettingAlarmViewController()
-    
-    var alarms = [Alarm]()
-//    {
-//        didSet {
-//
-//            print ("didset")
-//            alarms = alarms.sorted(by: { (first, second) -> Bool in
-//
-//                let sortByDate = Calendar.current.compare(first.alarmDate ?? Date(), to: second.alarmDate ?? Date(), toGranularity: .minute)
-//
-//
-//
-//                switch sortByDate {
-//
-//                case .orderedDescending:
-//                    first < second
-//                    return true
-//
-//                default:
-//                    print ("default")
-//                    return false
-////                case .orderedSame:
-////
-////                    print ("order 2")
-////                    return false
-////                case .orderedDescending:
-////                    print ("order 3")
-////                    return false
-//                }
-////                return first.time < second.time
-//            })
-//        }
-//    }
-    
-    
-    
-    var editingIndexPath: IndexPath?
+    private let settingAlarmViewController = SettingAlarmViewController()
+
+    private var alarms = [Alarm]()
+    {
+        //sort the array by date
+        didSet {
+            let inputFormatter = DateFormatter()
+            inputFormatter.timeZone = TimeZone(abbreviation: "GMT+0:00")
+            inputFormatter.dateFormat = "HH:mm"
+            
+            alarms = alarms.sorted(by: { (first, second) -> Bool in
+                
+                inputFormatter.date(from: (first.alarmDate?.string(format: "HH:mm"))!)!.timeIntervalSinceNow <= inputFormatter.date(from: (second.alarmDate?.string(format: "HH:mm"))!)!.timeIntervalSinceNow
+            })
+            tableView.reloadData()
+        }
+    }
+
+    private var editingIndexPath: IndexPath?
     
     private var alarmSound: AVAudioPlayer?
     private var soundVolume: Float = 1
@@ -168,7 +149,6 @@ class AlarmsViewController: UIViewController, UITableViewDelegate, UITableViewDa
     func editAlarm(at indexPath: IndexPath) {
         editingIndexPath = indexPath
         presentAlarmViewController(alarm: alarm(at: indexPath))
-        //            self.alarmViewController.datePicker.date = (self.alarm(at: indexPath)?.alarmDate)!
 
     }
     

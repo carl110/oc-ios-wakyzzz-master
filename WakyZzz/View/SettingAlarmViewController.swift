@@ -32,7 +32,6 @@ class SettingAlarmViewController: UIViewController, UITableViewDelegate, UITable
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         config()
-//        alarmsViewController.editAlarmDelegate = self
     }
     
     func config() {        
