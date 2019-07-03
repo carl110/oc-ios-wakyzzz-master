@@ -23,11 +23,11 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
                                 didReceive response: UNNotificationResponse,
                                 withCompletionHandler completionHandler: @escaping () -> Void) {
         
-        response.notification.request.content.body
+//        response.notification.request.content.body
 
         print ("id is \(response.notification.request.identifier)")
 
-        if response.actionIdentifier == "Text" {
+        if response.actionIdentifier == "TextFriend" {
             print ("option to text")
             
             let sms: String = "sms:body=Hello, how are you?."
@@ -45,16 +45,44 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         
         if response.actionIdentifier == "Snooze2" {
             print ("snooze for 2nd time")
-            evilAlarm(body: "This is the evil alarm", contentIdentifier: response.notification.request.identifier)
+            snoozeButtonPressed(seconds: 5,
+                                repeatTrigger: false,
+                                title: "WakyZzz",
+                                subtitle: "No more snoozing",
+                                body: "You now need to complete a task: \n* text a friend \n*Send a family member a kind thought",
+                                contentIdentifier: response.notification.request.identifier,
+                                sound: "sound.mp3",
+                                volume: 1,
+                                firstActionID: "TextFriend",
+                                firstActionTitle: "Message a friend",
+                                secondActionID: "TextFamily",
+                                secondActionTitile: "Contact family",
+                                thirdActionID: nil,
+                                thirdActionTitle: nil,
+                                deleteActionID: "Defer",
+                                deleteActionTitle: "I promis I will complete it later")
+
         }
-        
-//        response.notification.request.
-        
+
         if response.actionIdentifier == "Snooze" {
          print ("Snooze button pressed")
             
-            snoozeNotification(for: 30, title: "WakyZzz", subtitle: "FirstSnooze Alert", body: "This is your alarm", sound: "sound.mp3", volume: 0.5, request: response.notification.request)
-            
+            snoozeButtonPressed(seconds: 5,
+                                repeatTrigger: false,
+                                title: "WakyZzz",
+                                subtitle: "Fisrt Snooze",
+                                body: "This is your snooze alert",
+                                contentIdentifier: response.notification.request.identifier,
+                                sound: "sound.mp3",
+                                volume: 0.5,
+                                firstActionID: "Snooze2",
+                                firstActionTitle: "Snooze Again",
+                                secondActionID: "2ID",
+                                secondActionTitile: "This si just a test",
+                                thirdActionID: nil,
+                                thirdActionTitle: nil,
+                                deleteActionID: "Delete",
+                                deleteActionTitle: "Stop Alarm")
         }
         
         let application = UIApplication.shared
@@ -70,7 +98,7 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         }
     }
     
-    
+    //notification set by date from alarm
     func scheduleNotification(weekday: Int?, hour: Int, minute: Int, body: String, contentIdentifier: String) {
         //creating the notification content
         let content = UNMutableNotificationContent()
@@ -119,76 +147,30 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         
         notificationCenter.setNotificationCategories([category])
     }
-    
-    func snoozeNotification(for seconds: TimeInterval, title: String, subtitle: String, body: String, sound: String, volume: Float, request: UNNotificationRequest) {
+  
+    //timer notification set after snooze action
+    func snoozeButtonPressed(seconds: TimeInterval, repeatTrigger: Bool, title: String, subtitle: String, body: String, contentIdentifier: String, sound: String, volume: Float, firstActionID: String, firstActionTitle: String, secondActionID: String?, secondActionTitile: String?, thirdActionID: String?, thirdActionTitle: String?, deleteActionID: String, deleteActionTitle: String) {
+        //creating the notification content
         let content = UNMutableNotificationContent()
         let categoryIdentifier = "catagory ID"
-
+        
+        //adding title, subtitle, body and badge
         content.title = title
         content.subtitle = subtitle
         content.body = body
-        content.categoryIdentifier = categoryIdentifier
         if #available(iOS 12.0, *) {
             content.sound = UNNotificationSound.criticalSoundNamed(UNNotificationSoundName(rawValue: sound), withAudioVolume: volume)
         } else {
             // Fallback on earlier versions
             content.sound = UNNotificationSound.init(named: UNNotificationSoundName(rawValue: sound))
         }
-
-        let identifier = request.identifier
-        guard (request.trigger as? UNCalendarNotificationTrigger) != nil else {
-            debugPrint("Cannot reschedule notification without calendar trigger.")
-            return
-        }
-
-//        var components = oldTrigger.dateComponents
-//        components.hour = (components.hour ?? 0) + hours
-//        components.minute = (components.minute ?? 0) + minutes
-//        components.second = (components.second ?? 0) + seconds
-
-        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: seconds, repeats: false)
-//        let trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: false)
-        let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
-        
-
-        notificationCenter.add(request) { (error) in
-            if let error = error {
-                print("Error \(error.localizedDescription)")
-            }
-        }
-        
-        let snoozeAction = UNNotificationAction(identifier: "Snooze2", title: "Snooze", options: [])
-        let deleteAction = UNNotificationAction(identifier: "DeleteAction", title: "Delete", options: [.destructive])
-        let category = UNNotificationCategory(identifier: categoryIdentifier,
-                                              actions: [snoozeAction, deleteAction],
-                                              intentIdentifiers: [],
-                                              options: [])
-        
-        notificationCenter.setNotificationCategories([category])
-    }
-    
-    func evilAlarm(body: String, contentIdentifier: String) {
-        //creating the notification content
-        let content = UNMutableNotificationContent()
-        let categoryIdentifier = "catagory ID"
-        
-        //adding title, subtitle, body and badge
-        content.title = "WakyZzz Alarm"
-        content.subtitle = "This is the alarm you set for"
-        content.body = body
-        if #available(iOS 12.0, *) {
-            content.sound = UNNotificationSound.criticalSoundNamed(UNNotificationSoundName(rawValue: "sound.mp3"), withAudioVolume: 0.0)
-        } else {
-            // Fallback on earlier versions
-            content.sound = UNNotificationSound.init(named: UNNotificationSoundName(rawValue: "sound.mp3"))
-        }
         content.categoryIdentifier = categoryIdentifier
-
-        // The time/repeat trigger
-        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 10, repeats: false)
-//        let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
         
         let identifier = contentIdentifier
+        // The time/repeat trigger
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: seconds, repeats: repeatTrigger)
+        
+        
         
         //getting the notification request
         let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
@@ -199,44 +181,29 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
             }
         }
         
-        let textAction = UNNotificationAction(identifier: "Text", title: "Message a friens asking how they are...", options: [])
-        let deleteAction = UNNotificationAction(identifier: "DeleteAction", title: "OK Enough", options: [.destructive])
+        var catagoryArray: [UNNotificationAction] = []
+        
+        let firstAction = UNNotificationAction(identifier: firstActionID, title: firstActionTitle, options: [])
+        catagoryArray.append(firstAction)
+        if secondActionID != nil {
+           let secondAction = UNNotificationAction(identifier: secondActionID!, title: secondActionTitile!, options: [])
+            catagoryArray.append(secondAction)
+        }
+        if thirdActionID != nil {
+           let thirdAction = UNNotificationAction(identifier: thirdActionID!, title: thirdActionID!, options: [])
+            catagoryArray.append(thirdAction)
+        }
+        
+        let deleteAction = UNNotificationAction(identifier: deleteActionID, title: deleteActionTitle, options: [.destructive])
+        catagoryArray.append(deleteAction)
+        
         let category = UNNotificationCategory(identifier: categoryIdentifier,
-                                              actions: [textAction, deleteAction],
+                                              actions: catagoryArray,
                                               intentIdentifiers: [],
                                               options: [])
         
         notificationCenter.setNotificationCategories([category])
     }
+    
 }
 
-//extension UNNotification {
-//    func snoozeNotification(for hours: Int, minutes: Int, seconds: Int) {
-//        let content = UNMutableNotificationContent()
-//        
-//        content.title = "Another Alert"
-//        content.body = "Your message"
-//        content.sound = .default
-//        
-//        let identifier = self.request.identifier
-//        guard let oldTrigger = self.request.trigger as? UNCalendarNotificationTrigger else {
-//            debugPrint("Cannot reschedule notification without calendar trigger.")
-//            return
-//        }
-//        
-//        var components = oldTrigger.dateComponents
-//        components.hour = (components.hour ?? 0) + hours
-//        components.minute = (components.minute ?? 0) + minutes
-//        components.second = (components.second ?? 0) + seconds
-//        
-//        let trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: false)
-//        let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
-//        UNUserNotificationCenter.current().add(request) { error in
-//            if let error = error {
-//                debugPrint("Rescheduling failed", error.localizedDescription)
-//            } else {
-//                debugPrint("rescheduled success")
-//            }
-//        }
-//    }
-//
