@@ -25,6 +25,9 @@
 		8977152922C0E71E00F69131 /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8977152822C0E71E00F69131 /* Notification.swift */; };
 		89BA115922C0C219007CF134 /* WakyZzz.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 89BA115722C0C219007CF134 /* WakyZzz.xcdatamodeld */; };
 		89BA115B22C0C230007CF134 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89BA115A22C0C230007CF134 /* CoreDataManager.swift */; };
+		89E11E3D22CA4E69004DD603 /* wakyzzzImage.png in Resources */ = {isa = PBXBuildFile; fileRef = 89E11E3C22CA4E69004DD603 /* wakyzzzImage.png */; };
+		89E11E3F22CA620F004DD603 /* AppDelegate+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89E11E3E22CA620F004DD603 /* AppDelegate+extensions.swift */; };
+		89E11E4122CA6F55004DD603 /* UNNotification+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89E11E4022CA6F55004DD603 /* UNNotification+extensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -48,6 +51,9 @@
 		8977152822C0E71E00F69131 /* Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
 		89BA115822C0C219007CF134 /* WakyZzz.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = WakyZzz.xcdatamodel; sourceTree = "<group>"; };
 		89BA115A22C0C230007CF134 /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
+		89E11E3C22CA4E69004DD603 /* wakyzzzImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = wakyzzzImage.png; sourceTree = "<group>"; };
+		89E11E3E22CA620F004DD603 /* AppDelegate+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppDelegate+extensions.swift"; sourceTree = "<group>"; };
+		89E11E4022CA6F55004DD603 /* UNNotification+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UNNotification+extensions.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -102,6 +108,8 @@
 				89318EC922C39A9B004205F4 /* UIViewController.swift */,
 				89318ECB22C3A5B9004205F4 /* Date+extensions.swift */,
 				89318ECD22C4FA4A004205F4 /* UIDatePicker+extensions.swift */,
+				89E11E3E22CA620F004DD603 /* AppDelegate+extensions.swift */,
+				89E11E4022CA6F55004DD603 /* UNNotification+extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -144,6 +152,7 @@
 		89BA115522C0C1C5007CF134 /* Sounds */ = {
 			isa = PBXGroup;
 			children = (
+				89E11E3C22CA4E69004DD603 /* wakyzzzImage.png */,
 				0424EB7020C038AE00E15E46 /* sound.mp3 */,
 			);
 			path = Sounds;
@@ -218,6 +227,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				89E11E3D22CA4E69004DD603 /* wakyzzzImage.png in Resources */,
 				0424EB7120C038AE00E15E46 /* sound.mp3 in Resources */,
 				0424EB5E20BEF89100E15E46 /* LaunchScreen.storyboard in Resources */,
 				0424EB5B20BEF89100E15E46 /* Assets.xcassets in Resources */,
@@ -246,6 +256,8 @@
 				89BA115B22C0C230007CF134 /* CoreDataManager.swift in Sources */,
 				0424EB6920BEF93F00E15E46 /* Alarm.swift in Sources */,
 				89318EC822C25B50004205F4 /* DataForAlarms.swift in Sources */,
+				89E11E3F22CA620F004DD603 /* AppDelegate+extensions.swift in Sources */,
+				89E11E4122CA6F55004DD603 /* UNNotification+extensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

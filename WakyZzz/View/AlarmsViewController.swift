@@ -15,6 +15,8 @@ class AlarmsViewController: UIViewController, UITableViewDelegate, UITableViewDa
     @IBOutlet weak var tableView: UITableView!
     
     private let settingAlarmViewController = SettingAlarmViewController()
+    
+    var appDelegate = UIApplication.shared.delegate as? AppDelegate
 
     private var alarms = [Alarm]()
     {
@@ -51,8 +53,8 @@ class AlarmsViewController: UIViewController, UITableViewDelegate, UITableViewDa
     func config() {
         tableView.delegate = self
         tableView.dataSource = self
-//        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge], completionHandler: {didAllow, error in
-//        })
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound], completionHandler: {didAllow, error in
+        })
     }
     
     func loadAlarms() {
@@ -134,11 +136,14 @@ class AlarmsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         
         //if one time alarm do not add day of week
         if alarm.repeating.isEqualToString(find: "One time alarm") {
-            localNotification(weekday: nil, hour: hour, minute: minutes, body: alarm.caption)
+            
+            self.appDelegate?.scheduleNotification(weekday: nil, hour: hour, minute: minutes, body: alarm.caption, contentIdentifier: alarm.identifier)
+            print ("One time alarm - \(hour):\(minutes)")
         } else {
+            print ("repeat alarm \(hour):\(minutes) \(weekDay)")
             for weekDayBool in alarm.repeatDays {
                 if weekDayBool == true {
-                    localNotification(weekday: weekDay, hour: hour, minute: minutes, body: alarm.caption)
+                    self.appDelegate?.scheduleNotification(weekday: weekDay, hour: hour, minute: minutes, body: alarm.caption, contentIdentifier: alarm.identifier)
                 }
                 weekDay += 1
             }
@@ -200,44 +205,5 @@ class AlarmsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         }
         
     }
-    
-    func localNotification(weekday: Int?, hour: Int, minute: Int, body: String) {
-        //creating the notification content
-        let content = UNMutableNotificationContent()
-        
-        //adding title, subtitle, body and badge
-        content.title = "WakyZzz Alarm"
-        content.subtitle = "This is the alarm you set for"
-        content.body = body
-        content.badge = 1
-        content.sound = UNNotificationSound.init(named: UNNotificationSoundName(rawValue: "sound.mp3"))
-        
-        //getting the notification trigger
-        // The selected time to notify the user
-        var dateComponents = DateComponents()
-        dateComponents.calendar = Calendar.current
-        dateComponents.weekday? = (weekday)!
-        dateComponents.hour = hour
-        dateComponents.minute = minute
-        
-        // The time/repeat trigger
-        let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
-        
-        //getting the notification request
-        let request = UNNotificationRequest(identifier: "SimplifiedIOSNotification", content: content, trigger: trigger)
-        
-        UNUserNotificationCenter.current().delegate = self
-        
-        //adding the notification to notification center
-        UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
-        
-    }
-    
-    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-        
-        //displaying the ios local notification when app is in foreground
-        completionHandler([.alert, .sound])
-    }
-    
 }
 

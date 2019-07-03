@@ -154,6 +154,35 @@ class CoreDataManager {
         }
     }
     
+    func turnOffOneTimeAlarm(id: String) {
+        //set enabled button to false
+        let appDelegate =
+            UIApplication.shared.delegate as? AppDelegate
+        let managedContext = appDelegate!.persistentContainer.viewContext
+        
+        let predicate = NSPredicate(format: "identifier = %@", id)
+        let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "WakyZzz")
+        fetchRequest.predicate = predicate
+        
+        do {
+            let alarms = try managedContext.fetch(fetchRequest)
+            if let alarm = alarms.last {
+                
+                alarm.setValue(false, forKey: "enabled")
+                
+                do {
+                    try managedContext.save()
+                    
+                } catch {
+                    let error = error as NSError
+                    fatalError("Could not save. \(error), \(error.userInfo)")
+                }
+            }
+        } catch let error as NSError {
+            print ("Could not fetch. \(error). \(error.userInfo)")
+        }
+    }
+    
     func  updateAlarmRepeatDays(id: String, time: Int32, sun: Bool, mon: Bool, tue: Bool, wed: Bool, thu: Bool, fri: Bool, sat: Bool) {
         //Update data held in coredata
         let appDelegate =
