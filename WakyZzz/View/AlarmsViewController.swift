@@ -169,6 +169,9 @@ class AlarmsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         if editingIndexPath != nil {
             //recall didset to reorder values
             self.alarms = {self.alarms}()
+            //remove localnotification then create new one with updated details
+            UNUserNotificationCenter.current().removeDeliveredNotifications(withIdentifiers: [alarm.identifier])
+            setLocalNotification(alarm)
         }
         else { //if new alarm add to table
             addAlarm(alarm, at: IndexPath(row: alarms.count, section: 0))

@@ -32,7 +32,7 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         //first snooze
         if response.actionIdentifier == "Snooze" {
             snoozeButtonPressed(seconds: 60,
-                                repeatTrigger: true,
+                                repeatTrigger: false,
                                 title: "WakyZzz",
                                 subtitle: "Fisrt Snooze",
                                 body: "This is your snooze alert",
@@ -51,7 +51,7 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         
         //second snooze
         if response.actionIdentifier == "Snooze2" {
-            snoozeButtonPressed(seconds: 5,
+            snoozeButtonPressed(seconds: 60,
                                 repeatTrigger: false,
                                 title: "WakyZzz",
                                 subtitle: "No more snoozing",
