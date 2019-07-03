@@ -18,7 +18,7 @@ class AlarmsViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     var appDelegate = UIApplication.shared.delegate as? AppDelegate
 
-    private var alarms = [Alarm]()
+    var alarms = [Alarm]()
     {
         //sort the array by date
         didSet {
@@ -108,13 +108,14 @@ class AlarmsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         
         //remove from coredata
         CoreDataManager.shared.deleteAlarm(id: alarm(at: indexPath)!.identifier)
+        
+        //remove local notification for alarm
+        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [alarm(at: indexPath)!.identifier])
 
         //remove from array then table
         alarms.remove(at: indexPath.row)
         tableView.deleteRows(at: [indexPath], with: .automatic)
         tableView.endUpdates()
-        
-        
     }
     
     func editAlarm(at indexPath: IndexPath) {
@@ -123,31 +124,11 @@ class AlarmsViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     func addAlarm(_ alarm: Alarm, at indexPath: IndexPath) {
+        
+        //add alarm to array and table, set local notification
         tableView.beginUpdates()
         alarms.insert(alarm, at: indexPath.row)
-        
-        let date = alarm.alarmDate
-        let calendar = Calendar.current
-        let hour = calendar.component(.hour, from: date!)
-        let minutes = calendar.component(.minute, from: date!)
-        
-        //set weekday int to sunday for loop
-        var weekDay = 1
-        
-        //if one time alarm do not add day of week
-        if alarm.repeating.isEqualToString(find: "One time alarm") {
-            
-            self.appDelegate?.scheduleNotification(weekday: nil, hour: hour, minute: minutes, body: alarm.caption, contentIdentifier: alarm.identifier)
-            print ("One time alarm - \(hour):\(minutes)")
-        } else {
-            print ("repeat alarm \(hour):\(minutes) \(weekDay)")
-            for weekDayBool in alarm.repeatDays {
-                if weekDayBool == true {
-                    self.appDelegate?.scheduleNotification(weekday: weekDay, hour: hour, minute: minutes, body: alarm.caption, contentIdentifier: alarm.identifier)
-                }
-                weekDay += 1
-            }
-        }
+        setLocalNotification(alarm)
         tableView.insertRows(at: [indexPath], with: .automatic)
         tableView.endUpdates()
     }
@@ -162,6 +143,14 @@ class AlarmsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         if let indexPath = tableView.indexPath(for: cell) {
             if let alarm = self.alarm(at: indexPath) {
                 alarm.enabled = enabled
+
+                //set local notification with switch change
+                if enabled == false {
+                    print ("alarm ID \(alarm.identifier)")
+                    UNUserNotificationCenter.current().removeDeliveredNotifications(withIdentifiers: [alarm.identifier])
+                } else {
+                    setLocalNotification(alarm)
+                }
             }
         }
     }
@@ -204,6 +193,32 @@ class AlarmsViewController: UIViewController, UITableViewDelegate, UITableViewDa
             print ("Unable to locate sound file")
         }
         
+    }
+    
+    func setLocalNotification(_ alarm: Alarm) {
+        
+        //set date perameters
+        let date = alarm.alarmDate
+        let calendar = Calendar.current
+        let hour = calendar.component(.hour, from: date!)
+        let minutes = calendar.component(.minute, from: date!)
+        
+        //set weekday int to sunday for loop
+        var weekDay = 1
+        
+        //if one time alarm do not add day of week
+        if alarm.repeating.isEqualToString(find: "One time alarm") {
+            self.appDelegate?.scheduleNotification(weekday: nil, hour: hour, minute: minutes, body: alarm.caption, contentIdentifier: alarm.identifier)
+            print ("One time alarm - \(hour):\(minutes)")
+        } else {
+            print ("repeat alarm \(hour):\(minutes) \(weekDay)")
+            for weekDayBool in alarm.repeatDays {
+                if weekDayBool == true {
+                    self.appDelegate?.scheduleNotification(weekday: weekDay, hour: hour, minute: minutes, body: alarm.caption, contentIdentifier: alarm.identifier)
+                }
+                weekDay += 1
+            }
+        }
     }
 }
 

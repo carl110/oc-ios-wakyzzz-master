@@ -16,6 +16,12 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
                                 willPresent notification: UNNotification,
                                 withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         
+        CoreDataManager.shared.turnOffOneTimeAlarm(id: notification.request.identifier)
+        
+//        alarmViewController.tableView.reloadData()
+        
+        
+        
         completionHandler([.alert, .sound])
     }
     
@@ -174,6 +180,12 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
                                               options: [])
         
         notificationCenter.setNotificationCategories([category])
+//        
+//        if weekday == nil {
+//            CoreDataManager.shared.turnOffOneTimeAlarm(id: contentIdentifier)
+//            print ("alrm switched off")
+//        }
+        
     }
   
     //timer notification set after snooze action
