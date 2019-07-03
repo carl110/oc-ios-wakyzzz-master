@@ -27,7 +27,6 @@
 		89BA115B22C0C230007CF134 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89BA115A22C0C230007CF134 /* CoreDataManager.swift */; };
 		89E11E3D22CA4E69004DD603 /* wakyzzzImage.png in Resources */ = {isa = PBXBuildFile; fileRef = 89E11E3C22CA4E69004DD603 /* wakyzzzImage.png */; };
 		89E11E3F22CA620F004DD603 /* AppDelegate+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89E11E3E22CA620F004DD603 /* AppDelegate+extensions.swift */; };
-		89E11E4122CA6F55004DD603 /* UNNotification+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89E11E4022CA6F55004DD603 /* UNNotification+extensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -53,7 +52,6 @@
 		89BA115A22C0C230007CF134 /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		89E11E3C22CA4E69004DD603 /* wakyzzzImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = wakyzzzImage.png; sourceTree = "<group>"; };
 		89E11E3E22CA620F004DD603 /* AppDelegate+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppDelegate+extensions.swift"; sourceTree = "<group>"; };
-		89E11E4022CA6F55004DD603 /* UNNotification+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UNNotification+extensions.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -109,7 +107,6 @@
 				89318ECB22C3A5B9004205F4 /* Date+extensions.swift */,
 				89318ECD22C4FA4A004205F4 /* UIDatePicker+extensions.swift */,
 				89E11E3E22CA620F004DD603 /* AppDelegate+extensions.swift */,
-				89E11E4022CA6F55004DD603 /* UNNotification+extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -257,7 +254,6 @@
 				0424EB6920BEF93F00E15E46 /* Alarm.swift in Sources */,
 				89318EC822C25B50004205F4 /* DataForAlarms.swift in Sources */,
 				89E11E3F22CA620F004DD603 /* AppDelegate+extensions.swift in Sources */,
-				89E11E4122CA6F55004DD603 /* UNNotification+extensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -402,6 +398,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 2428X38UTQ;
 				INFOPLIST_FILE = WakyZzz/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -419,6 +416,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 2428X38UTQ;
 				INFOPLIST_FILE = WakyZzz/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

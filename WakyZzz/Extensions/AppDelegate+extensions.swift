@@ -23,52 +23,10 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
                                 didReceive response: UNNotificationResponse,
                                 withCompletionHandler completionHandler: @escaping () -> Void) {
         
-//        response.notification.request.content.body
-
-        print ("id is \(response.notification.request.identifier)")
-
-        if response.actionIdentifier == "TextFriend" {
-            print ("option to text")
-            
-            let sms: String = "sms:body=Hello, how are you?."
-            let strURL: String = sms.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
-            UIApplication.shared.open(URL.init(string: strURL)!, options: [:], completionHandler: nil)
-        }
-        
-        if response.actionIdentifier == "DeleteAction" {
-            print ("Action deleted")
-
-            notificationCenter.removePendingNotificationRequests(withIdentifiers: [response.notification.request.identifier])
-            
-            notificationCenter.removeDeliveredNotifications(withIdentifiers: [response.notification.request.identifier])
-        }
-        
-        if response.actionIdentifier == "Snooze2" {
-            print ("snooze for 2nd time")
-            snoozeButtonPressed(seconds: 5,
-                                repeatTrigger: false,
-                                title: "WakyZzz",
-                                subtitle: "No more snoozing",
-                                body: "You now need to complete a task: \n* text a friend \n*Send a family member a kind thought",
-                                contentIdentifier: response.notification.request.identifier,
-                                sound: "sound.mp3",
-                                volume: 1,
-                                firstActionID: "TextFriend",
-                                firstActionTitle: "Message a friend",
-                                secondActionID: "TextFamily",
-                                secondActionTitile: "Contact family",
-                                thirdActionID: nil,
-                                thirdActionTitle: nil,
-                                deleteActionID: "Defer",
-                                deleteActionTitle: "I promis I will complete it later")
-
-        }
-
+        //first snooze
         if response.actionIdentifier == "Snooze" {
-         print ("Snooze button pressed")
-            
-            snoozeButtonPressed(seconds: 5,
-                                repeatTrigger: false,
+            snoozeButtonPressed(seconds: 60,
+                                repeatTrigger: true,
                                 title: "WakyZzz",
                                 subtitle: "Fisrt Snooze",
                                 body: "This is your snooze alert",
@@ -85,17 +43,87 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
                                 deleteActionTitle: "Stop Alarm")
         }
         
-        let application = UIApplication.shared
+        //second snooze
+        if response.actionIdentifier == "Snooze2" {
+            snoozeButtonPressed(seconds: 5,
+                                repeatTrigger: false,
+                                title: "WakyZzz",
+                                subtitle: "No more snoozing",
+                                body: "You now need to complete a task: \n* text a friend \n*Send a family member a kind thought",
+                                contentIdentifier: response.notification.request.identifier,
+                                sound: "sound.mp3",
+                                volume: 1,
+                                firstActionID: "TextFriend",
+                                firstActionTitle: "Message a friend",
+                                secondActionID: "TextFamily",
+                                secondActionTitile: "Contact family",
+                                thirdActionID: nil,
+                                thirdActionTitle: nil,
+                                deleteActionID: "Defer",
+                                deleteActionTitle: "I promis I will complete it later")
+        }
+
+        //open sms to text friend
+        if response.actionIdentifier == "TextFriend" {
+
+            //open sms with body filled
+            let sms: String = "sms:?&body=Hello, how are you?."
+            let strURL: String = sms.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
+            UIApplication.shared.open(URL.init(string: strURL)!, options: [:], completionHandler: nil)
+        }
         
-        if(application.applicationState == .active){
-            print("user tapped the notification bar when the app is in foreground")
+        //open sms to text family
+        if response.actionIdentifier == "TextFamily" {
+            let kindThoughtArray =  ["Be kind, for everyone you meet is fighting a battle you know nothing about.",
+                                    "Yes, in the poor man's garden grow Far more than herbs and flowers - Kind thoughts, contentment, peace of mind, And Joy for weary hours.",
+                                    "We are formed and molded by our thoughts. Those whose minds are shaped by selfless thoughts give joy when they speak or act.",
+                                    "Kindness is the language which the deaf can hear and the blind can see.",
+                                    "Just one small positive thought in the morning can change your whole day.",
+                                    "Grant me the grace to dissolve my negative thoughts about myself today. I breathe the grace of kindness into my heart. And may the grace of healing flow abundantly to every one in need of help."]
             
+            //randomly place a kind thought in sms body
+            let sms: String = "sms:?&body=\(kindThoughtArray.randomElement()!)"
+            let strURL: String = sms.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
+            UIApplication.shared.open(URL.init(string: strURL)!, options: [:], completionHandler: nil)
         }
         
-        if(application.applicationState == .inactive)
-        {
-            print("user tapped the notification bar when the app is in background")
+        if response.actionIdentifier == "Defer" {
+            snoozeButtonPressed(seconds: TimeInterval(Int.random(in: 1800...7200)),
+                                repeatTrigger: false,
+                                title: "WakyZzz",
+                                subtitle: "Task Completion",
+                                body: "You promissed to complete a task od kindness for snoozing your alarm. Have you completed a task yet",
+                                contentIdentifier: response.notification.request.identifier,
+                                sound: "sound.mp3",
+                                volume: 1,
+                                firstActionID: "TaksComplete",
+                                firstActionTitle: "Yes, I have completed a task",
+                                secondActionID: "TextFriend",
+                                secondActionTitile: "Text a friend now...",
+                                thirdActionID: "TextFamily",
+                                thirdActionTitle: "Text family now...",
+                                deleteActionID: "Defer",
+                                deleteActionTitle: "No, I promis I will complete it later")
         }
+        
+        //if delete action remove all notifications with same ID
+        if response.actionIdentifier == "DeleteAction" {
+            notificationCenter.removePendingNotificationRequests(withIdentifiers: [response.notification.request.identifier])
+            notificationCenter.removeDeliveredNotifications(withIdentifiers: [response.notification.request.identifier])
+        }
+
+//        let application = UIApplication.shared
+//        
+//        if(application.applicationState == .active){
+//            print("user tapped the notification bar when the app is in foreground")
+//            
+//        }
+//        
+//        if(application.applicationState == .inactive)
+//        {
+//            print("user tapped the notification bar when the app is in background")
+//        }
+        completionHandler()
     }
     
     //notification set by date from alarm
@@ -104,7 +132,7 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         let content = UNMutableNotificationContent()
         let categoryIdentifier = "catagory ID"
         
-        //adding title, subtitle, body and badge
+        //adding title, subtitle, body
         content.title = "WakyZzz Alarm"
         content.subtitle = "This is the alarm you set for"
         content.body = body
@@ -154,7 +182,7 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         let content = UNMutableNotificationContent()
         let categoryIdentifier = "catagory ID"
         
-        //adding title, subtitle, body and badge
+        //adding title, subtitle, body
         content.title = title
         content.subtitle = subtitle
         content.body = body
