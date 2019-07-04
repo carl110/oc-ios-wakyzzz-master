@@ -12,22 +12,50 @@ import UserNotifications
 
 extension AppDelegate: UNUserNotificationCenterDelegate {
     
+    
+    func disableOneTimeAlarm(id: String) {
+        
+        let check = CoreDataManager.shared.fetchAlarmFromID(id: id)
+        for i in check! {
+            if i.sun && i.mon && i.tue && i.wed && i.thu && i.fri && i.sat == false {
+                //update bool for enabled on alarm
+                CoreDataManager.shared.turnOffOneTimeAlarm(id: id)
+            }
+        }
+    }
+    
+    //only runs code if app in foreground
     func userNotificationCenter(_ center: UNUserNotificationCenter,
                                 willPresent notification: UNNotification,
                                 withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         
-        CoreDataManager.shared.turnOffOneTimeAlarm(id: notification.request.identifier)
+        //if app open disable onetime alarm and update table
+        disableOneTimeAlarm(id: notification.request.identifier)
         
-//        alarmViewController.tableView.reloadData()
-        
-        
-        
+        //fetch updated alarm data for table
+        ((window!.rootViewController as? UINavigationController)?.topViewController as? AlarmsViewController)?.loadAlarms()
         completionHandler([.alert, .sound])
     }
     
+    //code only runs if user interacts with notification
     func userNotificationCenter(_ center: UNUserNotificationCenter,
                                 didReceive response: UNNotificationResponse,
                                 withCompletionHandler completionHandler: @escaping () -> Void) {
+        let state = UIApplication.shared.applicationState
+    
+        //if app in background disable onetime alarm and update table
+        if state == .background {
+            print ("background touched")
+            disableOneTimeAlarm(id: response.notification.request.identifier)
+            //fetch updated alarm data for table
+            ((window!.rootViewController as? UINavigationController)?.topViewController as? AlarmsViewController)?.loadAlarms()
+        }
+        
+        //if app inactive disable if onetimealarm
+        if state == .inactive {
+            print ("inactive touched")
+            disableOneTimeAlarm(id: response.notification.request.identifier)
+        }
         
         //first snooze
         if response.actionIdentifier == "Snooze" {
@@ -35,7 +63,7 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
                                 repeatTrigger: false,
                                 title: "WakyZzz",
                                 subtitle: "Fisrt Snooze",
-                                body: "This is your snooze alert",
+                                body: "Alarm set for \(response.notification.request.content.categoryIdentifier)",
                                 contentIdentifier: response.notification.request.identifier,
                                 sound: "sound.mp3",
                                 volume: 0.5,
@@ -46,7 +74,8 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
                                 thirdActionID: nil,
                                 thirdActionTitle: nil,
                                 deleteActionID: "Delete",
-                                deleteActionTitle: "Stop Alarm")
+                                deleteActionTitle: "Stop Alarm",
+                                time: response.notification.request.content.categoryIdentifier)
         }
         
         //second snooze
@@ -54,7 +83,7 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
             snoozeButtonPressed(seconds: 60,
                                 repeatTrigger: false,
                                 title: "WakyZzz",
-                                subtitle: "No more snoozing",
+                                subtitle: "\(response.notification.request.content.categoryIdentifier)",
                                 body: "You now need to complete a task: \n* text a friend \n*Send a family member a kind thought",
                                 contentIdentifier: response.notification.request.identifier,
                                 sound: "sound.mp3",
@@ -66,12 +95,13 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
                                 thirdActionID: nil,
                                 thirdActionTitle: nil,
                                 deleteActionID: "Defer",
-                                deleteActionTitle: "I promis I will complete it later")
+                                deleteActionTitle: "I promis I will complete it later",
+                                time: response.notification.request.content.categoryIdentifier)
         }
-
+        
         //open sms to text friend
         if response.actionIdentifier == "TextFriend" {
-
+            
             //open sms with body filled
             let sms: String = "sms:?&body=Hello, how are you?."
             let strURL: String = sms.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
@@ -81,11 +111,11 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         //open sms to text family
         if response.actionIdentifier == "TextFamily" {
             let kindThoughtArray =  ["Be kind, for everyone you meet is fighting a battle you know nothing about.",
-                                    "Yes, in the poor man's garden grow Far more than herbs and flowers - Kind thoughts, contentment, peace of mind, And Joy for weary hours.",
-                                    "We are formed and molded by our thoughts. Those whose minds are shaped by selfless thoughts give joy when they speak or act.",
-                                    "Kindness is the language which the deaf can hear and the blind can see.",
-                                    "Just one small positive thought in the morning can change your whole day.",
-                                    "Grant me the grace to dissolve my negative thoughts about myself today. I breathe the grace of kindness into my heart. And may the grace of healing flow abundantly to every one in need of help."]
+                                     "Yes, in the poor man's garden grow Far more than herbs and flowers - Kind thoughts, contentment, peace of mind, And Joy for weary hours.",
+                                     "We are formed and molded by our thoughts. Those whose minds are shaped by selfless thoughts give joy when they speak or act.",
+                                     "Kindness is the language which the deaf can hear and the blind can see.",
+                                     "Just one small positive thought in the morning can change your whole day.",
+                                     "Grant me the grace to dissolve my negative thoughts about myself today. I breathe the grace of kindness into my heart. And may the grace of healing flow abundantly to every one in need of help."]
             
             //randomly place a kind thought in sms body
             let sms: String = "sms:?&body=\(kindThoughtArray.randomElement()!)"
@@ -98,7 +128,7 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
                                 repeatTrigger: false,
                                 title: "WakyZzz",
                                 subtitle: "Task Completion",
-                                body: "You promissed to complete a task od kindness for snoozing your alarm. Have you completed a task yet",
+                                body: "You promissed to complete a task for snoozing your alarm set for \(response.notification.request.content.categoryIdentifier). Have you completed the task yet?",
                                 contentIdentifier: response.notification.request.identifier,
                                 sound: "sound.mp3",
                                 volume: 1,
@@ -109,7 +139,8 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
                                 thirdActionID: "TextFamily",
                                 thirdActionTitle: "Text family now...",
                                 deleteActionID: "Defer",
-                                deleteActionTitle: "No, I promis I will complete it later")
+                                deleteActionTitle: "No, I promis I will complete it later",
+                                time: response.notification.request.content.categoryIdentifier)
         }
         
         //if delete action remove all notifications with same ID
@@ -117,28 +148,15 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
             notificationCenter.removePendingNotificationRequests(withIdentifiers: [response.notification.request.identifier])
             notificationCenter.removeDeliveredNotifications(withIdentifiers: [response.notification.request.identifier])
         }
-
-//        let application = UIApplication.shared
-//        
-//        if(application.applicationState == .active){
-//            print("user tapped the notification bar when the app is in foreground")
-//            
-//        }
-//        
-//        if(application.applicationState == .inactive)
-//        {
-//            print("user tapped the notification bar when the app is in background")
-//        }
         completionHandler()
     }
     
     //notification set by date from alarm
-    func scheduleNotification(weekday: Int?, hour: Int, minute: Int, body: String, contentIdentifier: String) {
+    func scheduleNotification(weekday: Int, hour: Int, minute: Int, body: String, contentIdentifier: String, time: String) {
+        
         //creating the notification content
         let content = UNMutableNotificationContent()
-        let categoryIdentifier = "catagory ID"
-        
-        //adding title, subtitle, body
+        let categoryIdentifier = time
         content.title = "WakyZzz Alarm"
         content.subtitle = "This is the alarm you set for"
         content.body = body
@@ -149,12 +167,12 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
             content.sound = UNNotificationSound.init(named: UNNotificationSoundName(rawValue: "sound.mp3"))
         }
         content.categoryIdentifier = categoryIdentifier
-
+        
         //getting the notification trigger
         // The selected time to notify the user
         var dateComponents = DateComponents()
         dateComponents.calendar = Calendar.current
-        dateComponents.weekday? = (weekday)!
+        dateComponents.weekday = weekday
         dateComponents.hour = hour
         dateComponents.minute = minute
         
@@ -180,19 +198,18 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
                                               options: [])
         
         notificationCenter.setNotificationCategories([category])
-//        
-//        if weekday == nil {
-//            CoreDataManager.shared.turnOffOneTimeAlarm(id: contentIdentifier)
-//            print ("alrm switched off")
-//        }
-        
+        //
+        //        if weekday == nil {
+        //            CoreDataManager.shared.turnOffOneTimeAlarm(id: contentIdentifier)
+        //            print ("alrm switched off")
+        //        }
     }
-  
+    
     //timer notification set after snooze action
-    func snoozeButtonPressed(seconds: TimeInterval, repeatTrigger: Bool, title: String, subtitle: String, body: String, contentIdentifier: String, sound: String, volume: Float, firstActionID: String, firstActionTitle: String, secondActionID: String?, secondActionTitile: String?, thirdActionID: String?, thirdActionTitle: String?, deleteActionID: String, deleteActionTitle: String) {
+    func snoozeButtonPressed(seconds: TimeInterval, repeatTrigger: Bool, title: String, subtitle: String, body: String, contentIdentifier: String, sound: String, volume: Float, firstActionID: String, firstActionTitle: String, secondActionID: String?, secondActionTitile: String?, thirdActionID: String?, thirdActionTitle: String?, deleteActionID: String, deleteActionTitle: String, time: String) {
         //creating the notification content
         let content = UNMutableNotificationContent()
-        let categoryIdentifier = "catagory ID"
+        let categoryIdentifier = time
         
         //adding title, subtitle, body
         content.title = title
@@ -226,11 +243,11 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         let firstAction = UNNotificationAction(identifier: firstActionID, title: firstActionTitle, options: [])
         catagoryArray.append(firstAction)
         if secondActionID != nil {
-           let secondAction = UNNotificationAction(identifier: secondActionID!, title: secondActionTitile!, options: [])
+            let secondAction = UNNotificationAction(identifier: secondActionID!, title: secondActionTitile!, options: [])
             catagoryArray.append(secondAction)
         }
         if thirdActionID != nil {
-           let thirdAction = UNNotificationAction(identifier: thirdActionID!, title: thirdActionID!, options: [])
+            let thirdAction = UNNotificationAction(identifier: thirdActionID!, title: thirdActionID!, options: [])
             catagoryArray.append(thirdAction)
         }
         

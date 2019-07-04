@@ -38,6 +38,12 @@ class AlarmTableViewCell: UITableViewCell {
         enabledSwitch.isOn = enabled
     }
     
+    override func prepareForReuse() {
+        captionLabel.text = ""
+        subcaptionLabel.text = ""
+        enabledSwitch.isOn = false
+    }
+    
     @IBAction func enabledStateChanged(_ sender: Any) {
         delegate?.alarmCell(self, enabledChanged: enabledSwitch.isOn)
     }

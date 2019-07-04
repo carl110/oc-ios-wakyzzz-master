@@ -12,12 +12,9 @@ import UserNotifications
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
-    
-    var alarmViewController: AlarmsViewController!
 
     var window: UIWindow?
      let notificationCenter = UNUserNotificationCenter.current()
-
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
@@ -25,7 +22,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         notificationCenter.delegate = self
         
-        let options: UNAuthorizationOptions = [.alert, .sound, .badge]
+        let options: UNAuthorizationOptions = [.alert, .sound]
         
         notificationCenter.requestAuthorization(options: options) {
             (didAllow, error) in
@@ -38,6 +35,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //Prints location of the SQL data to view with DB Browser
         print("Documents Directory: ", FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).last ?? "Not Found!")
         return true
+
+        
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
@@ -52,6 +51,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillEnterForeground(_ application: UIApplication) {
         // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
+        
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {

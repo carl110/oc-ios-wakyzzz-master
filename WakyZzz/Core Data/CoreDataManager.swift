@@ -205,6 +205,36 @@ class CoreDataManager {
                 alarm.setValue(thu, forKey: "repeatThu")
                 alarm.setValue(fri, forKey: "repeatFri")
                 alarm.setValue(sat, forKey: "repeatSat")
+                alarm.setValue(true, forKeyPath: "enabled")
+                
+                do {
+                    try managedContext.save()
+                    
+                } catch {
+                    let error = error as NSError
+                    fatalError("Could not save. \(error), \(error.userInfo)")
+                }
+            }
+        } catch let error as NSError {
+            print ("Could not fetch. \(error). \(error.userInfo)")
+        }
+    }
+    
+    func  updateAlarmEnabled(id: String, enabled: Bool) {
+        //Update data held in coredata
+        let appDelegate =
+            UIApplication.shared.delegate as? AppDelegate
+        let managedContext = appDelegate!.persistentContainer.viewContext
+        
+        let predicate = NSPredicate(format: "identifier = %@", id)
+        let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "WakyZzz")
+        fetchRequest.predicate = predicate
+        
+        do {
+            let alarms = try managedContext.fetch(fetchRequest)
+            if let alarm = alarms.last {
+                
+                alarm.setValue(enabled, forKeyPath: "enabled")
                 
                 do {
                     try managedContext.save()

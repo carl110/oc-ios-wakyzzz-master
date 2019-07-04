@@ -22,7 +22,6 @@ class AlarmsViewController: UIViewController, UITableViewDelegate, UITableViewDa
     {
         //sort the array by date
         didSet {
-            print ("didset running")
             let inputFormatter = DateFormatter()
             inputFormatter.timeZone = TimeZone(abbreviation: "GMT+0:00")
             inputFormatter.dateFormat = "HH:mm"
@@ -47,7 +46,34 @@ class AlarmsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         config()
-        loadAlarms()
+        checkNotifications()
+    }
+    
+    func checkNotifications() { //catch any notification that ran when app was not active and user did not respond
+        let center = UNUserNotificationCenter.current()
+        center.getDeliveredNotifications { (notifications) in
+            DispatchQueue.main.async { [weak self] in
+                for item in notifications {
+                    self?.appDelegate?.disableOneTimeAlarm(id: item.request.identifier)
+                }
+                self?.loadAlarms()
+            }
+        }
+    }
+    
+   
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+         let center = UNUserNotificationCenter.current()
+        center.getPendingNotificationRequests { (notifications) in
+            print("Count: \(notifications.count)")
+            for item in notifications {
+                print(item.identifier)
+                print ("time \(item.content.body)")
+            }
+        }
     }
 
     func config() {
@@ -58,6 +84,10 @@ class AlarmsViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     func loadAlarms() {
+        
+//        print ("loadAlarms")
+        //clear array before fetching coredata
+        alarms.removeAll()
         let fetchedData = CoreDataManager.shared.fetchAlarmData()
         //run through alarms saved and add to array
         for i in fetchedData! {
@@ -144,11 +174,14 @@ class AlarmsViewController: UIViewController, UITableViewDelegate, UITableViewDa
             if let alarm = self.alarm(at: indexPath) {
                 alarm.enabled = enabled
 
-                //set local notification with switch change
+                //set local notification and update coredata with switch change
                 if enabled == false {
-                    print ("alarm ID \(alarm.identifier)")
-                    UNUserNotificationCenter.current().removeDeliveredNotifications(withIdentifiers: [alarm.identifier])
+                    print ("enabled == false alarm ID \(alarm.identifier)")
+                    UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [alarm.identifier])
+                    CoreDataManager.shared.updateAlarmEnabled(id: alarm.identifier, enabled: false)
+                    
                 } else {
+                    CoreDataManager.shared.updateAlarmEnabled(id: alarm.identifier, enabled: false)
                     setLocalNotification(alarm)
                 }
             }
@@ -172,6 +205,8 @@ class AlarmsViewController: UIViewController, UITableViewDelegate, UITableViewDa
             //remove localnotification then create new one with updated details
             UNUserNotificationCenter.current().removeDeliveredNotifications(withIdentifiers: [alarm.identifier])
             setLocalNotification(alarm)
+            
+            loadAlarms()
         }
         else { //if new alarm add to table
             addAlarm(alarm, at: IndexPath(row: alarms.count, section: 0))
@@ -209,15 +244,16 @@ class AlarmsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         //set weekday int to sunday for loop
         var weekDay = 1
         
-        //if one time alarm do not add day of week
+        //if one time set day to today
         if alarm.repeating.isEqualToString(find: "One time alarm") {
-            self.appDelegate?.scheduleNotification(weekday: nil, hour: hour, minute: minutes, body: alarm.caption, contentIdentifier: alarm.identifier)
+            self.appDelegate?.scheduleNotification(weekday: Calendar.current.component(.weekday, from: Date()), hour: hour, minute: minutes, body: alarm.caption, contentIdentifier: alarm.identifier, time: alarm.caption)
             print ("One time alarm - \(hour):\(minutes)")
         } else {
-            print ("repeat alarm \(hour):\(minutes) \(weekDay)")
+//            print ("repeat alarm \(hour):\(minutes) \(weekDay)")
             for weekDayBool in alarm.repeatDays {
                 if weekDayBool == true {
-                    self.appDelegate?.scheduleNotification(weekday: weekDay, hour: hour, minute: minutes, body: alarm.caption, contentIdentifier: alarm.identifier)
+                    self.appDelegate?.scheduleNotification(weekday: weekDay, hour: hour, minute: minutes, body: alarm.caption, contentIdentifier: alarm.identifier, time: alarm.caption)
+                    print ("repeat alarm \(hour):\(minutes) \(weekDay)")
                 }
                 weekDay += 1
             }
