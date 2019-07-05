@@ -175,4 +175,3 @@ class AlarmsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         editingIndexPath = nil
     }
 }
-
