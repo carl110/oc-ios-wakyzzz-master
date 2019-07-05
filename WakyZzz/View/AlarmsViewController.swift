@@ -24,16 +24,13 @@ class AlarmsViewController: UIViewController, UITableViewDelegate, UITableViewDa
             let inputFormatter = DateFormatter()
             inputFormatter.timeZone = TimeZone(abbreviation: "GMT+0:00")
             inputFormatter.dateFormat = "HH:mm"
-            
             alarms = alarms.sorted(by: { (first, second) -> Bool in
-                
                 inputFormatter.date(from: (first.alarmDate?.string(format: "HH:mm"))!)!.timeIntervalSinceNow <= inputFormatter.date(from: (second.alarmDate?.string(format: "HH:mm"))!)!.timeIntervalSinceNow
             })
             tableView.reloadData()
         }
     }
     
-
     @IBAction func addButtonPress(_ sender: Any) {
         presentAlarmViewController(alarm: nil)
     }
