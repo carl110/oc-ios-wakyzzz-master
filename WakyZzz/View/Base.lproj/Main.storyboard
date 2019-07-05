@@ -119,9 +119,6 @@
                                 <date key="date" timeIntervalSinceReferenceDate="549442800.23124099">
                                     <!--2018-05-31 07:00:00 +0000-->
                                 </date>
-                                <connections>
-                                    <action selector="datePickerValueChanged:" destination="ZR4-jh-IrU" eventType="valueChanged" id="B2A-rL-BzN"/>
-                                </connections>
                             </datePicker>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" allowsMultipleSelection="YES" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="kcO-Xc-lqv">
                                 <rect key="frame" x="0.0" y="264" width="375" height="403"/>
@@ -171,6 +168,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="datePicker" destination="yhU-rL-ath" id="nnL-sm-Jke"/>
+                        <outlet property="doneButton" destination="7PH-Xf-t0B" id="Swq-Xc-hop"/>
                         <outlet property="tableView" destination="kcO-Xc-lqv" id="3v5-wd-KJk"/>
                     </connections>
                 </viewController>

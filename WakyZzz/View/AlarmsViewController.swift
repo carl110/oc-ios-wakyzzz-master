@@ -17,7 +17,7 @@ class AlarmsViewController: UIViewController, UITableViewDelegate, UITableViewDa
     private let settingAlarmViewController = SettingAlarmViewController()
     
     var appDelegate = UIApplication.shared.delegate as? AppDelegate
-
+    
     var alarms = [Alarm]()
     {
         //sort the array by date
@@ -33,7 +33,7 @@ class AlarmsViewController: UIViewController, UITableViewDelegate, UITableViewDa
             tableView.reloadData()
         }
     }
-
+    
     private var editingIndexPath: IndexPath?
     
     private var alarmSound: AVAudioPlayer?
@@ -47,6 +47,7 @@ class AlarmsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         // Do any additional setup after loading the view, typically from a nib.
         config()
         checkNotifications()
+//        UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
     }
     
     func checkNotifications() { //catch any notification that ran when app was not active and user did not respond
@@ -61,21 +62,22 @@ class AlarmsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         }
     }
     
-   
+    
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
-         let center = UNUserNotificationCenter.current()
+        
+        let center = UNUserNotificationCenter.current()
         center.getPendingNotificationRequests { (notifications) in
             print("Count: \(notifications.count)")
             for item in notifications {
                 print(item.identifier)
-                print ("time \(item.content.body)")
+//                print ("time \(item.content.body)")
+//                print ("time \(item.trigger)")
             }
         }
     }
-
+    
     func config() {
         tableView.delegate = self
         tableView.dataSource = self
@@ -84,8 +86,6 @@ class AlarmsViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     func loadAlarms() {
-        
-//        print ("loadAlarms")
         //clear array before fetching coredata
         alarms.removeAll()
         let fetchedData = CoreDataManager.shared.fetchAlarmData()
@@ -100,7 +100,7 @@ class AlarmsViewController: UIViewController, UITableViewDelegate, UITableViewDa
             alarms.append(alarm)
         }
     }
-
+    
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
@@ -138,9 +138,7 @@ class AlarmsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         
         //remove from coredata
         CoreDataManager.shared.deleteAlarm(id: alarm(at: indexPath)!.identifier)
-        
-        //remove local notification for alarm
-        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [alarm(at: indexPath)!.identifier])
+        removeAllPendingNotificationsFor(alarmID: alarm(at: indexPath)!.identifier)
 
         //remove from array then table
         alarms.remove(at: indexPath.row)
@@ -173,11 +171,12 @@ class AlarmsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         if let indexPath = tableView.indexPath(for: cell) {
             if let alarm = self.alarm(at: indexPath) {
                 alarm.enabled = enabled
-
+                
                 //set local notification and update coredata with switch change
                 if enabled == false {
                     print ("enabled == false alarm ID \(alarm.identifier)")
-                    UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [alarm.identifier])
+                    
+                    removeAllPendingNotificationsFor(alarmID: alarm.identifier)
                     CoreDataManager.shared.updateAlarmEnabled(id: alarm.identifier, enabled: false)
                     
                 } else {
@@ -200,12 +199,12 @@ class AlarmsViewController: UIViewController, UITableViewDelegate, UITableViewDa
     func alarmViewControllerDone(alarm: Alarm) {
         //if edited alarm
         if editingIndexPath != nil {
-            //recall didset to reorder values
-            self.alarms = {self.alarms}()
-            //remove localnotification then create new one with updated details
-            UNUserNotificationCenter.current().removeDeliveredNotifications(withIdentifiers: [alarm.identifier])
-            setLocalNotification(alarm)
             
+            //dispatch to make sure new notificationsa are set after old ones removed
+            DispatchQueue.main.async {
+                  self.setLocalNotification(alarm)
+            }
+          
             loadAlarms()
         }
         else { //if new alarm add to table
@@ -233,31 +232,5 @@ class AlarmsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         
     }
     
-    func setLocalNotification(_ alarm: Alarm) {
-        
-        //set date perameters
-        let date = alarm.alarmDate
-        let calendar = Calendar.current
-        let hour = calendar.component(.hour, from: date!)
-        let minutes = calendar.component(.minute, from: date!)
-        
-        //set weekday int to sunday for loop
-        var weekDay = 1
-        
-        //if one time set day to today
-        if alarm.repeating.isEqualToString(find: "One time alarm") {
-            self.appDelegate?.scheduleNotification(weekday: Calendar.current.component(.weekday, from: Date()), hour: hour, minute: minutes, body: alarm.caption, contentIdentifier: alarm.identifier, time: alarm.caption)
-            print ("One time alarm - \(hour):\(minutes)")
-        } else {
-//            print ("repeat alarm \(hour):\(minutes) \(weekDay)")
-            for weekDayBool in alarm.repeatDays {
-                if weekDayBool == true {
-                    self.appDelegate?.scheduleNotification(weekday: weekDay, hour: hour, minute: minutes, body: alarm.caption, contentIdentifier: alarm.identifier, time: alarm.caption)
-                    print ("repeat alarm \(hour):\(minutes) \(weekDay)")
-                }
-                weekDay += 1
-            }
-        }
-    }
 }
 

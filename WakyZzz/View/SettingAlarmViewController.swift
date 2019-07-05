@@ -16,21 +16,16 @@ protocol AlarmViewControllerDelegate {
 
 class SettingAlarmViewController: UIViewController, UITableViewDelegate, UITableViewDataSource{
     
-    
     var alarm: Alarm?
-    private let date = Date()
-    
     var delegate: AlarmViewControllerDelegate?
+    private let date = Date()
 
-    
-    
     @IBOutlet weak var datePicker: UIDatePicker!
     @IBOutlet weak var tableView: UITableView!
-
+    @IBOutlet weak var doneButton: UIBarButtonItem!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
         config()
     }
     
@@ -42,15 +37,13 @@ class SettingAlarmViewController: UIViewController, UITableViewDelegate, UITable
         else {
             navigationItem.title = "Edit Alarm"
         }
-        
         tableView.delegate = self
         tableView.dataSource = self
         
-        //if adding new alarm set datepicker time to 08:00 or to the alarm time
+        //if adding new alarm set datepicker time to 08:00
         if alarm?.time == 2880 {
             datePicker.setNewDate(from: "08:00", format: "HH:mm")
-        } else {
-
+        } else { //if alarm exists set time as alarm time
             datePicker.date = (alarm?.alarmDate)!
         }
     }
@@ -65,7 +58,6 @@ class SettingAlarmViewController: UIViewController, UITableViewDelegate, UITable
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "DayOfWeekCell", for: indexPath)
-        
         cell.textLabel?.text = Alarm.daysOfWeek[indexPath.row]
         cell.accessoryType = (alarm?.repeatDays[indexPath.row])! ? .checkmark : .none
         if (alarm?.repeatDays[indexPath.row])! {
@@ -94,14 +86,17 @@ class SettingAlarmViewController: UIViewController, UITableViewDelegate, UITable
     }
     
     @IBAction func doneButtonPress(_ sender: Any) {
-
         let checkAlarms = CoreDataManager.shared.fetchAlarmFromID(id: alarm!.identifier)
 
         //if alarm exists just update alarm
         if (checkAlarms?.count)! > 0 {
+            
+            //remove all usernotifications for alarm
+            removeAllPendingNotificationsFor(alarmID: alarm!.identifier)
+            
             //update changes to alarm
-            print ("matching alarm")
             CoreDataManager.shared.updateAlarmRepeatDays(id: alarm!.identifier, time: getTime(date: datePicker.date), sun: alarm!.repeatDays[0], mon: alarm!.repeatDays[1], tue: alarm!.repeatDays[2], wed: alarm!.repeatDays[3], thu: alarm!.repeatDays[4], fri: alarm!.repeatDays[5], sat: alarm!.repeatDays[6])
+
         } else {
             CoreDataManager.shared.saveAlarm(time: getTime(date: datePicker.date), enabled: alarm!.enabled, sun: alarm!.repeatDays[0], mon: alarm!.repeatDays[1], tue: alarm!.repeatDays[2], wed: alarm!.repeatDays[3], thu: alarm!.repeatDays[4], fri: alarm!.repeatDays[5], sat: alarm!.repeatDays[6], identifier: alarm!.identifier)
         }
@@ -113,8 +108,4 @@ class SettingAlarmViewController: UIViewController, UITableViewDelegate, UITable
         //go back to alarm view
         presentingViewController?.dismiss(animated: true, completion: nil)
     }
-    @IBAction func datePickerValueChanged(_ sender: Any) {
-
-    }
-    
 }
