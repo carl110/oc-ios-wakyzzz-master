@@ -47,7 +47,7 @@ class AlarmsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         // Do any additional setup after loading the view, typically from a nib.
         config()
         checkNotifications()
-//        UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
+        //        UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
     }
     
     func checkNotifications() { //catch any notification that ran when app was not active and user did not respond
@@ -64,16 +64,16 @@ class AlarmsViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
+    func showNotificationIDs() {
+      
         
         let center = UNUserNotificationCenter.current()
         center.getPendingNotificationRequests { (notifications) in
             print("Count: \(notifications.count)")
             for item in notifications {
                 print(item.identifier)
-//                print ("time \(item.content.body)")
-//                print ("time \(item.trigger)")
+                //                print ("time \(item.content.body)")
+                //                print ("time \(item.trigger)")
             }
         }
     }
@@ -138,8 +138,8 @@ class AlarmsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         
         //remove from coredata
         CoreDataManager.shared.deleteAlarm(id: alarm(at: indexPath)!.identifier)
-        removeAllPendingNotificationsFor(alarmID: alarm(at: indexPath)!.identifier)
-
+        removeAllPendingNotifications(alarmID: alarm(at: indexPath)!.identifier) {_ in }
+        
         //remove from array then table
         alarms.remove(at: indexPath.row)
         tableView.deleteRows(at: [indexPath], with: .automatic)
@@ -176,7 +176,7 @@ class AlarmsViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 if enabled == false {
                     print ("enabled == false alarm ID \(alarm.identifier)")
                     
-                    removeAllPendingNotificationsFor(alarmID: alarm.identifier)
+                    removeAllPendingNotifications(alarmID: alarm.identifier) {_ in }
                     CoreDataManager.shared.updateAlarmEnabled(id: alarm.identifier, enabled: false)
                     
                 } else {
@@ -199,12 +199,7 @@ class AlarmsViewController: UIViewController, UITableViewDelegate, UITableViewDa
     func alarmViewControllerDone(alarm: Alarm) {
         //if edited alarm
         if editingIndexPath != nil {
-            
-            //dispatch to make sure new notificationsa are set after old ones removed
-            DispatchQueue.main.async {
-                  self.setLocalNotification(alarm)
-            }
-          
+            setLocalNotification(alarm)
             loadAlarms()
         }
         else { //if new alarm add to table
@@ -231,6 +226,6 @@ class AlarmsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         }
         
     }
-    
+
 }
 

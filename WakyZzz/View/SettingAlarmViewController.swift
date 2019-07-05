@@ -19,7 +19,7 @@ class SettingAlarmViewController: UIViewController, UITableViewDelegate, UITable
     var alarm: Alarm?
     var delegate: AlarmViewControllerDelegate?
     private let date = Date()
-
+    
     @IBOutlet weak var datePicker: UIDatePicker!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var doneButton: UIBarButtonItem!
@@ -86,26 +86,52 @@ class SettingAlarmViewController: UIViewController, UITableViewDelegate, UITable
     }
     
     @IBAction func doneButtonPress(_ sender: Any) {
+        
+        
+        
+        
+        
+        
         let checkAlarms = CoreDataManager.shared.fetchAlarmFromID(id: alarm!.identifier)
-
+        
         //if alarm exists just update alarm
         if (checkAlarms?.count)! > 0 {
             
-            //remove all usernotifications for alarm
-            removeAllPendingNotificationsFor(alarmID: alarm!.identifier)
+            //completionhandler to ensure notifications are removed before the next code is run
+            removeAllPendingNotifications(alarmID: alarm!.identifier) { (sucess) in
+                if sucess {
+                    DispatchQueue.main.async {
+                        //update changes to alarm
+                        CoreDataManager.shared.updateAlarmRepeatDays(id: self.alarm!.identifier, time: self.getTime(date: self.datePicker.date), sun: self.alarm!.repeatDays[0], mon: self.alarm!.repeatDays[1], tue: self.alarm!.repeatDays[2], wed: self.alarm!.repeatDays[3], thu: self.alarm!.repeatDays[4], fri: self.alarm!.repeatDays[5], sat: self.alarm!.repeatDays[6])
+                        
+                    }
+                    self.addAlarmtoPreviouseViewController()
+                }
+            }
             
-            //update changes to alarm
-            CoreDataManager.shared.updateAlarmRepeatDays(id: alarm!.identifier, time: getTime(date: datePicker.date), sun: alarm!.repeatDays[0], mon: alarm!.repeatDays[1], tue: alarm!.repeatDays[2], wed: alarm!.repeatDays[3], thu: alarm!.repeatDays[4], fri: alarm!.repeatDays[5], sat: alarm!.repeatDays[6])
-
+            
+            
         } else {
             CoreDataManager.shared.saveAlarm(time: getTime(date: datePicker.date), enabled: alarm!.enabled, sun: alarm!.repeatDays[0], mon: alarm!.repeatDays[1], tue: alarm!.repeatDays[2], wed: alarm!.repeatDays[3], thu: alarm!.repeatDays[4], fri: alarm!.repeatDays[5], sat: alarm!.repeatDays[6], identifier: alarm!.identifier)
+            
+            addAlarmtoPreviouseViewController()
+            
         }
         
-        //add alarm as per date picker time
-        alarm?.setTime(date: datePicker.date)
-        delegate?.alarmViewControllerDone(alarm: alarm!)
-
-        //go back to alarm view
-        presentingViewController?.dismiss(animated: true, completion: nil)
+        
+    }
+    
+    
+    func addAlarmtoPreviouseViewController() {
+        
+        DispatchQueue.main.async {
+            //add alarm as per date picker time
+            self.alarm?.setTime(date: self.datePicker.date)
+            self.delegate?.alarmViewControllerDone(alarm: self.alarm!)
+            
+            //go back to alarm view
+            self.presentingViewController?.dismiss(animated: true, completion: nil)
+        }
+        
     }
 }
