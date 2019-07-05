@@ -20,13 +20,10 @@ class CoreDataManager {
     }
     
     func saveAlarm(time: Int32, enabled: Bool, sun: Bool, mon: Bool, tue: Bool, wed: Bool, thu: Bool, fri: Bool, sat: Bool, identifier: String) {
-        
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
             return
         }
-        
         let managedContext = appDelegate.persistentContainer.viewContext
-        
         let entity = NSEntityDescription.entity(forEntityName: "WakyZzz", in: managedContext)!
         let managedObject = NSManagedObject(entity: entity, insertInto: managedContext)
         
@@ -40,7 +37,6 @@ class CoreDataManager {
         managedObject.setValue(fri, forKey: "repeatFri")
         managedObject.setValue(sat, forKey: "repeatSat")
         managedObject.setValue(identifier, forKey: "identifier")
-        
         do {
             try managedContext.save()
         } catch {
@@ -50,31 +46,21 @@ class CoreDataManager {
     }
     
     func fetchAlarmData() -> [DataForAlarms]? {
-        
         let appDelegate =
             UIApplication.shared.delegate as? AppDelegate
         let managedContext = appDelegate!.persistentContainer.viewContext
-        
         let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "WakyZzz")
-        
-//        //sort fetch by time
-//        let sort = NSSortDescriptor(key: #keyPath(WakyZzz.time), ascending: true)
-//        fetchRequest.sortDescriptors = [sort]
-        
         do {
             let alarms = try managedContext.fetch(fetchRequest)
             var alarmObjects: [DataForAlarms] = []
-            
             alarms.forEach { (alarmObject) in
                 alarmObjects.append(DataForAlarms(object: alarmObject))
             }
-            
             return alarmObjects
         } catch let error as NSError {
             print ("Could not fetch. \(error) \(error.userInfo)")
             return nil
         }
-        
     }
     
     func fetchIndividualAlarm(time: Int32) -> [DataForAlarms]? {
@@ -86,7 +72,6 @@ class CoreDataManager {
         let predicate = NSPredicate(format: "time = %i", time)
         let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "WakyZzz")
         fetchRequest.predicate = predicate
-        
         do {
             let alarms = try managedContext.fetch(fetchRequest)
             var alarmObjects: [DataForAlarms] = []
@@ -94,7 +79,6 @@ class CoreDataManager {
             alarms.forEach { (alarmObject) in
                 alarmObjects.append(DataForAlarms(object: alarmObject))
             }
-            
             return alarmObjects
         } catch let error as NSError {
             print ("Could not fetch. \(error) \(error.userInfo)")
@@ -107,11 +91,9 @@ class CoreDataManager {
         let appDelegate =
             UIApplication.shared.delegate as? AppDelegate
         let managedContext = appDelegate!.persistentContainer.viewContext
-        
         let predicate = NSPredicate(format: "identifier = %@", id)
         let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "WakyZzz")
         fetchRequest.predicate = predicate
-        
         do {
             let alarms = try managedContext.fetch(fetchRequest)
             var alarmObjects: [DataForAlarms] = []
@@ -119,7 +101,6 @@ class CoreDataManager {
             alarms.forEach { (alarmObject) in
                 alarmObjects.append(DataForAlarms(object: alarmObject))
             }
-            
             return alarmObjects
         } catch let error as NSError {
             print ("Could not fetch. \(error) \(error.userInfo)")
@@ -131,15 +112,11 @@ class CoreDataManager {
         let appDelegate =
             UIApplication.shared.delegate as? AppDelegate
         let managedContext = appDelegate!.persistentContainer.viewContext
-        
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "WakyZzz")
-        
         let predicate = NSPredicate(format: "identifier = %@", id)
-        
         fetchRequest.predicate = predicate
         do{
             let result = try managedContext.fetch(fetchRequest)
-            
             if result.count > 0{
                 for object in result {
                     managedContext.delete(object as! NSManagedObject)
@@ -159,20 +136,15 @@ class CoreDataManager {
         let appDelegate =
             UIApplication.shared.delegate as? AppDelegate
         let managedContext = appDelegate!.persistentContainer.viewContext
-        
         let predicate = NSPredicate(format: "identifier = %@", id)
         let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "WakyZzz")
         fetchRequest.predicate = predicate
-        
         do {
             let alarms = try managedContext.fetch(fetchRequest)
             if let alarm = alarms.last {
-                
                 alarm.setValue(false, forKey: "enabled")
-                
                 do {
                     try managedContext.save()
-                    
                 } catch {
                     let error = error as NSError
                     fatalError("Could not save. \(error), \(error.userInfo)")
@@ -188,15 +160,12 @@ class CoreDataManager {
         let appDelegate =
             UIApplication.shared.delegate as? AppDelegate
         let managedContext = appDelegate!.persistentContainer.viewContext
-        
         let predicate = NSPredicate(format: "identifier = %@", id)
         let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "WakyZzz")
         fetchRequest.predicate = predicate
-        
         do {
             let alarms = try managedContext.fetch(fetchRequest)
             if let alarm = alarms.last {
-                
                 alarm.setValue(time, forKey: "time")
                 alarm.setValue(sun, forKey: "repeatSun")
                 alarm.setValue(mon, forKey: "repeatMon")
@@ -206,10 +175,8 @@ class CoreDataManager {
                 alarm.setValue(fri, forKey: "repeatFri")
                 alarm.setValue(sat, forKey: "repeatSat")
                 alarm.setValue(true, forKeyPath: "enabled")
-                
                 do {
                     try managedContext.save()
-                    
                 } catch {
                     let error = error as NSError
                     fatalError("Could not save. \(error), \(error.userInfo)")
@@ -225,20 +192,15 @@ class CoreDataManager {
         let appDelegate =
             UIApplication.shared.delegate as? AppDelegate
         let managedContext = appDelegate!.persistentContainer.viewContext
-        
         let predicate = NSPredicate(format: "identifier = %@", id)
         let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "WakyZzz")
         fetchRequest.predicate = predicate
-        
         do {
             let alarms = try managedContext.fetch(fetchRequest)
             if let alarm = alarms.last {
-                
                 alarm.setValue(enabled, forKeyPath: "enabled")
-                
                 do {
                     try managedContext.save()
-                    
                 } catch {
                     let error = error as NSError
                     fatalError("Could not save. \(error), \(error.userInfo)")

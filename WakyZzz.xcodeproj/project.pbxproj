@@ -16,7 +16,10 @@
 		0424EB6B20BEF96400E15E46 /* Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0424EB6A20BEF96400E15E46 /* Action.swift */; };
 		0424EB6D20BF022900E15E46 /* AlarmTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0424EB6C20BF022900E15E46 /* AlarmTableViewCell.swift */; };
 		0424EB6F20BF0FAE00E15E46 /* SettingAlarmViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0424EB6E20BF0FAE00E15E46 /* SettingAlarmViewController.swift */; };
-		0424EB7120C038AE00E15E46 /* sound.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 0424EB7020C038AE00E15E46 /* sound.mp3 */; };
+		891A508822CFC0D000391EAB /* scarySound.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 891A508722CFC0D000391EAB /* scarySound.mp3 */; };
+		891A508C22CFC1F800391EAB /* alarmSound2.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 891A508922CFC1F800391EAB /* alarmSound2.mp3 */; };
+		891A508D22CFC1F800391EAB /* alarmSound3.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 891A508A22CFC1F800391EAB /* alarmSound3.mp3 */; };
+		891A509022CFC37400391EAB /* howl.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 891A508F22CFC37300391EAB /* howl.mp3 */; };
 		89318EC622C2417A004205F4 /* String+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89318EC522C2417A004205F4 /* String+extensions.swift */; };
 		89318EC822C25B50004205F4 /* DataForAlarms.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89318EC722C25B50004205F4 /* DataForAlarms.swift */; };
 		89318ECA22C39A9B004205F4 /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89318EC922C39A9B004205F4 /* UIViewController.swift */; };
@@ -41,7 +44,10 @@
 		0424EB6A20BEF96400E15E46 /* Action.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Action.swift; sourceTree = "<group>"; };
 		0424EB6C20BF022900E15E46 /* AlarmTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmTableViewCell.swift; sourceTree = "<group>"; };
 		0424EB6E20BF0FAE00E15E46 /* SettingAlarmViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingAlarmViewController.swift; sourceTree = "<group>"; };
-		0424EB7020C038AE00E15E46 /* sound.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = sound.mp3; sourceTree = "<group>"; };
+		891A508722CFC0D000391EAB /* scarySound.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = scarySound.mp3; path = ../../../../Downloads/scarySound.mp3; sourceTree = "<group>"; };
+		891A508922CFC1F800391EAB /* alarmSound2.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = alarmSound2.mp3; sourceTree = "<group>"; };
+		891A508A22CFC1F800391EAB /* alarmSound3.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = alarmSound3.mp3; sourceTree = "<group>"; };
+		891A508F22CFC37300391EAB /* howl.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = howl.mp3; sourceTree = "<group>"; };
 		89318EC522C2417A004205F4 /* String+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+extensions.swift"; sourceTree = "<group>"; };
 		89318EC722C25B50004205F4 /* DataForAlarms.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataForAlarms.swift; sourceTree = "<group>"; };
 		89318EC922C39A9B004205F4 /* UIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewController.swift; sourceTree = "<group>"; };
@@ -150,7 +156,10 @@
 			isa = PBXGroup;
 			children = (
 				89E11E3C22CA4E69004DD603 /* wakyzzzImage.png */,
-				0424EB7020C038AE00E15E46 /* sound.mp3 */,
+				891A508922CFC1F800391EAB /* alarmSound2.mp3 */,
+				891A508A22CFC1F800391EAB /* alarmSound3.mp3 */,
+				891A508F22CFC37300391EAB /* howl.mp3 */,
+				891A508722CFC0D000391EAB /* scarySound.mp3 */,
 			);
 			path = Sounds;
 			sourceTree = "<group>";
@@ -224,10 +233,13 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				891A509022CFC37400391EAB /* howl.mp3 in Resources */,
 				89E11E3D22CA4E69004DD603 /* wakyzzzImage.png in Resources */,
-				0424EB7120C038AE00E15E46 /* sound.mp3 in Resources */,
+				891A508822CFC0D000391EAB /* scarySound.mp3 in Resources */,
 				0424EB5E20BEF89100E15E46 /* LaunchScreen.storyboard in Resources */,
+				891A508C22CFC1F800391EAB /* alarmSound2.mp3 in Resources */,
 				0424EB5B20BEF89100E15E46 /* Assets.xcassets in Resources */,
+				891A508D22CFC1F800391EAB /* alarmSound3.mp3 in Resources */,
 				0424EB5920BEF89000E15E46 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

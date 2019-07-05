@@ -24,13 +24,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         let options: UNAuthorizationOptions = [.alert, .sound]
         
+        //request authorisation from user to show user notifications
         notificationCenter.requestAuthorization(options: options) {
             (didAllow, error) in
             if !didAllow {
                 print("User has declined notifications")
             }
         }
-        
         
         //Prints location of the SQL data to view with DB Browser
         print("Documents Directory: ", FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).last ?? "Not Found!")

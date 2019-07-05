@@ -10,11 +10,10 @@ import Foundation
 import UIKit
 import UserNotifications
 
+
 extension AppDelegate: UNUserNotificationCenterDelegate {
-    
-    
+
     func disableOneTimeAlarm(id: String) {
-        
         let check = CoreDataManager.shared.fetchAlarmFromID(id: id)
         for i in check! {
             if i.sun && i.mon && i.tue && i.wed && i.thu && i.fri && i.sat == false {
@@ -65,8 +64,8 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
                                 subtitle: "Fisrt Snooze",
                                 body: "Alarm set for \(response.notification.request.content.categoryIdentifier)",
                                 contentIdentifier: response.notification.request.identifier,
-                                sound: "sound.mp3",
-                                volume: 0.5,
+                                sound: "alarmSound3.mp3",
+                                volume: 0.8,
                                 firstActionID: "Snooze2",
                                 firstActionTitle: "Snooze Again",
                                 secondActionID: "2ID",
@@ -86,7 +85,7 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
                                 subtitle: "\(response.notification.request.content.categoryIdentifier)",
                                 body: "You now need to complete a task: \n* text a friend \n*Send a family member a kind thought",
                                 contentIdentifier: response.notification.request.identifier,
-                                sound: "sound.mp3",
+                                sound: "scarySound.mp3",
                                 volume: 1,
                                 firstActionID: "TextFriend",
                                 firstActionTitle: "Message a friend",
@@ -130,7 +129,7 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
                                 subtitle: "Task Completion",
                                 body: "You promissed to complete a task for snoozing your alarm set for \(response.notification.request.content.categoryIdentifier). Have you completed the task yet?",
                                 contentIdentifier: response.notification.request.identifier,
-                                sound: "sound.mp3",
+                                sound: "howl.mp3",
                                 volume: 1,
                                 firstActionID: "TaksComplete",
                                 firstActionTitle: "Yes, I have completed a task",
@@ -161,10 +160,10 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         content.subtitle = "This is the alarm you set for"
         content.body = body
         if #available(iOS 12.0, *) {
-            content.sound = UNNotificationSound.criticalSoundNamed(UNNotificationSoundName(rawValue: "sound.mp3"), withAudioVolume: 0.0)
+            content.sound = UNNotificationSound.criticalSoundNamed(UNNotificationSoundName(rawValue: "alarmSound2.mp3"), withAudioVolume: 0.4)
         } else {
             // Fallback on earlier versions
-            content.sound = UNNotificationSound.init(named: UNNotificationSoundName(rawValue: "sound.mp3"))
+            content.sound = UNNotificationSound.init(named: UNNotificationSoundName(rawValue: "alarmSound2.mp3"))
         }
         content.categoryIdentifier = categoryIdentifier
         
@@ -261,6 +260,6 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         
         notificationCenter.setNotificationCategories([category])
     }
-    
+
 }
 

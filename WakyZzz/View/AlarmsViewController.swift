@@ -7,18 +7,17 @@
 //
 
 import UIKit
-import AVFoundation
 import UserNotifications
 import CoreData
 
 class AlarmsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UNUserNotificationCenterDelegate, AlarmCellDelegate, AlarmViewControllerDelegate {
+    
     @IBOutlet weak var tableView: UITableView!
     
     private let settingAlarmViewController = SettingAlarmViewController()
-    
-    var appDelegate = UIApplication.shared.delegate as? AppDelegate
-    
-    var alarms = [Alarm]()
+    private var appDelegate = UIApplication.shared.delegate as? AppDelegate
+    private var editingIndexPath: IndexPath?
+    private var alarms = [Alarm]()
     {
         //sort the array by date
         didSet {
@@ -34,10 +33,7 @@ class AlarmsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         }
     }
     
-    private var editingIndexPath: IndexPath?
-    
-    private var alarmSound: AVAudioPlayer?
-    private var soundVolume: Float = 1
+
     @IBAction func addButtonPress(_ sender: Any) {
         presentAlarmViewController(alarm: nil)
     }
@@ -47,7 +43,6 @@ class AlarmsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         // Do any additional setup after loading the view, typically from a nib.
         config()
         checkNotifications()
-        //        UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
     }
     
     func checkNotifications() { //catch any notification that ran when app was not active and user did not respond
@@ -61,19 +56,13 @@ class AlarmsViewController: UIViewController, UITableViewDelegate, UITableViewDa
             }
         }
     }
-    
-    
-    
+
     func showNotificationIDs() {
-      
-        
         let center = UNUserNotificationCenter.current()
         center.getPendingNotificationRequests { (notifications) in
             print("Count: \(notifications.count)")
             for item in notifications {
                 print(item.identifier)
-                //                print ("time \(item.content.body)")
-                //                print ("time \(item.trigger)")
             }
         }
     }
@@ -81,8 +70,6 @@ class AlarmsViewController: UIViewController, UITableViewDelegate, UITableViewDa
     func config() {
         tableView.delegate = self
         tableView.dataSource = self
-        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound], completionHandler: {didAllow, error in
-        })
     }
     
     func loadAlarms() {
@@ -161,26 +148,15 @@ class AlarmsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         tableView.endUpdates()
     }
     
-    func moveAlarm(from originalIndextPath: IndexPath, to targetIndexPath: IndexPath) {
-        let alarm = alarms.remove(at: originalIndextPath.row)
-        alarms.insert(alarm, at: targetIndexPath.row)
-        tableView.reloadData()
-    }
-    
     func alarmCell(_ cell: AlarmTableViewCell, enabledChanged enabled: Bool) {
         if let indexPath = tableView.indexPath(for: cell) {
             if let alarm = self.alarm(at: indexPath) {
                 alarm.enabled = enabled
-                
-                //set local notification and update coredata with switch change
-                if enabled == false {
-                    print ("enabled == false alarm ID \(alarm.identifier)")
-                    
+                if enabled == false { //remove local notifications and update core data
                     removeAllPendingNotifications(alarmID: alarm.identifier) {_ in }
                     CoreDataManager.shared.updateAlarmEnabled(id: alarm.identifier, enabled: false)
-                    
-                } else {
-                    CoreDataManager.shared.updateAlarmEnabled(id: alarm.identifier, enabled: false)
+                } else { //add local notifications
+                    CoreDataManager.shared.updateAlarmEnabled(id: alarm.identifier, enabled: true)
                     setLocalNotification(alarm)
                 }
             }
@@ -197,7 +173,7 @@ class AlarmsViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     func alarmViewControllerDone(alarm: Alarm) {
-        //if edited alarm
+        //if alarm exists
         if editingIndexPath != nil {
             setLocalNotification(alarm)
             loadAlarms()
@@ -211,21 +187,5 @@ class AlarmsViewController: UIViewController, UITableViewDelegate, UITableViewDa
     func alarmViewControllerCancel() {
         editingIndexPath = nil
     }
-    
-    //first alarm sound
-    func playSound() {
-        let path = Bundle.main.path(forResource: "sound.mp3", ofType: nil)!
-        let url = URL(fileURLWithPath: path)
-        
-        do {
-            self.alarmSound = try AVAudioPlayer(contentsOf: url)
-            self.alarmSound?.play()
-            self.alarmSound?.volume = self.soundVolume
-        } catch {
-            print ("Unable to locate sound file")
-        }
-        
-    }
-
 }
 
