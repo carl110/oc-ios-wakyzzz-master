@@ -17,6 +17,7 @@ class Alarm {
     var enabled = true
     var identifier = Date().string(format: "MMMddyyyyhhmmss")
     
+    //calculate time
     var alarmDate: Date? {
         let date = Date()
         let calendar = Calendar.current
@@ -38,6 +39,7 @@ class Alarm {
         return formatter.string(from: self.alarmDate!)
     }
     
+    //string for days of week or oneime alarm
     var repeating: String {
         var captions = [String]()
         for i in 0 ..< repeatDays.count {

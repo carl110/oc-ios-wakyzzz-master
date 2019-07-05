@@ -56,16 +56,6 @@ class AlarmsViewController: UIViewController, UITableViewDelegate, UITableViewDa
             }
         }
     }
-
-    func showNotificationIDs() {
-        let center = UNUserNotificationCenter.current()
-        center.getPendingNotificationRequests { (notifications) in
-            print("Count: \(notifications.count)")
-            for item in notifications {
-                print(item.identifier)
-            }
-        }
-    }
     
     func config() {
         tableView.delegate = self
@@ -107,11 +97,11 @@ class AlarmsViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         
-        let delete = UITableViewRowAction(style: .destructive, title: "Delete") { (action, indexPath) in
-            self.deleteAlarm(at: indexPath)
+        let delete = UITableViewRowAction(style: .destructive, title: "Delete") { [weak self] (action, indexPath) in
+            self?.deleteAlarm(at: indexPath)
         }
-        let edit = UITableViewRowAction(style: .normal, title: "Edit") { (action, indexPath) in
-            self.editAlarm(at: indexPath)
+        let edit = UITableViewRowAction(style: .normal, title: "Edit") { [weak self] (action, indexPath) in
+            self?.editAlarm(at: indexPath)
         }
         return [delete, edit]
     }

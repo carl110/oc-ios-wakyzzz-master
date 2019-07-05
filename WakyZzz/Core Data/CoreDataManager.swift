@@ -63,29 +63,6 @@ class CoreDataManager {
         }
     }
     
-    func fetchIndividualAlarm(time: Int32) -> [DataForAlarms]? {
-        //Fetch data for selected time
-        let appDelegate =
-            UIApplication.shared.delegate as? AppDelegate
-        let managedContext = appDelegate!.persistentContainer.viewContext
-        
-        let predicate = NSPredicate(format: "time = %i", time)
-        let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "WakyZzz")
-        fetchRequest.predicate = predicate
-        do {
-            let alarms = try managedContext.fetch(fetchRequest)
-            var alarmObjects: [DataForAlarms] = []
-            
-            alarms.forEach { (alarmObject) in
-                alarmObjects.append(DataForAlarms(object: alarmObject))
-            }
-            return alarmObjects
-        } catch let error as NSError {
-            print ("Could not fetch. \(error) \(error.userInfo)")
-            return nil
-        }
-    }
-    
     func fetchAlarmFromID(id: String) -> [DataForAlarms]? {
         //Fetch data for selected time
         let appDelegate =

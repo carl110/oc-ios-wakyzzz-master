@@ -25,10 +25,8 @@
 		89318ECA22C39A9B004205F4 /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89318EC922C39A9B004205F4 /* UIViewController.swift */; };
 		89318ECC22C3A5B9004205F4 /* Date+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89318ECB22C3A5B9004205F4 /* Date+extensions.swift */; };
 		89318ECE22C4FA4A004205F4 /* UIDatePicker+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89318ECD22C4FA4A004205F4 /* UIDatePicker+extensions.swift */; };
-		8977152922C0E71E00F69131 /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8977152822C0E71E00F69131 /* Notification.swift */; };
 		89BA115922C0C219007CF134 /* WakyZzz.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 89BA115722C0C219007CF134 /* WakyZzz.xcdatamodeld */; };
 		89BA115B22C0C230007CF134 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89BA115A22C0C230007CF134 /* CoreDataManager.swift */; };
-		89E11E3D22CA4E69004DD603 /* wakyzzzImage.png in Resources */ = {isa = PBXBuildFile; fileRef = 89E11E3C22CA4E69004DD603 /* wakyzzzImage.png */; };
 		89E11E3F22CA620F004DD603 /* AppDelegate+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89E11E3E22CA620F004DD603 /* AppDelegate+extensions.swift */; };
 /* End PBXBuildFile section */
 
@@ -53,10 +51,8 @@
 		89318EC922C39A9B004205F4 /* UIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewController.swift; sourceTree = "<group>"; };
 		89318ECB22C3A5B9004205F4 /* Date+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+extensions.swift"; sourceTree = "<group>"; };
 		89318ECD22C4FA4A004205F4 /* UIDatePicker+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIDatePicker+extensions.swift"; sourceTree = "<group>"; };
-		8977152822C0E71E00F69131 /* Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
 		89BA115822C0C219007CF134 /* WakyZzz.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = WakyZzz.xcdatamodel; sourceTree = "<group>"; };
 		89BA115A22C0C230007CF134 /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
-		89E11E3C22CA4E69004DD603 /* wakyzzzImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = wakyzzzImage.png; sourceTree = "<group>"; };
 		89E11E3E22CA620F004DD603 /* AppDelegate+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppDelegate+extensions.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -91,7 +87,6 @@
 			isa = PBXGroup;
 			children = (
 				89318EC422C24160004205F4 /* Extensions */,
-				8977152722C0E6FE00F69131 /* View Model */,
 				89BA115522C0C1C5007CF134 /* Sounds */,
 				89BA115122C0C16F007CF134 /* Model */,
 				89BA115322C0C18B007CF134 /* View */,
@@ -115,14 +110,6 @@
 				89E11E3E22CA620F004DD603 /* AppDelegate+extensions.swift */,
 			);
 			path = Extensions;
-			sourceTree = "<group>";
-		};
-		8977152722C0E6FE00F69131 /* View Model */ = {
-			isa = PBXGroup;
-			children = (
-				8977152822C0E71E00F69131 /* Notification.swift */,
-			);
-			path = "View Model";
 			sourceTree = "<group>";
 		};
 		89BA115122C0C16F007CF134 /* Model */ = {
@@ -155,7 +142,6 @@
 		89BA115522C0C1C5007CF134 /* Sounds */ = {
 			isa = PBXGroup;
 			children = (
-				89E11E3C22CA4E69004DD603 /* wakyzzzImage.png */,
 				891A508922CFC1F800391EAB /* alarmSound2.mp3 */,
 				891A508A22CFC1F800391EAB /* alarmSound3.mp3 */,
 				891A508F22CFC37300391EAB /* howl.mp3 */,
@@ -234,7 +220,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				891A509022CFC37400391EAB /* howl.mp3 in Resources */,
-				89E11E3D22CA4E69004DD603 /* wakyzzzImage.png in Resources */,
 				891A508822CFC0D000391EAB /* scarySound.mp3 in Resources */,
 				0424EB5E20BEF89100E15E46 /* LaunchScreen.storyboard in Resources */,
 				891A508C22CFC1F800391EAB /* alarmSound2.mp3 in Resources */,
@@ -251,7 +236,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8977152922C0E71E00F69131 /* Notification.swift in Sources */,
 				0424EB5620BEF89000E15E46 /* AlarmsViewController.swift in Sources */,
 				89318ECA22C39A9B004205F4 /* UIViewController.swift in Sources */,
 				89318ECE22C4FA4A004205F4 /* UIDatePicker+extensions.swift in Sources */,

@@ -14,14 +14,12 @@ import UserNotifications
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-     let notificationCenter = UNUserNotificationCenter.current()
-
+    let notificationCenter = UNUserNotificationCenter.current()
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         
-        
         notificationCenter.delegate = self
-        
         let options: UNAuthorizationOptions = [.alert, .sound]
         
         //request authorisation from user to show user notifications
@@ -31,12 +29,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 print("User has declined notifications")
             }
         }
-        
-        //Prints location of the SQL data to view with DB Browser
-        print("Documents Directory: ", FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).last ?? "Not Found!")
         return true
-
-        
     }
 
     func applicationWillResignActive(_ application: UIApplication) {

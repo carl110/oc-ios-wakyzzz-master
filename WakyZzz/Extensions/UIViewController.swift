@@ -27,14 +27,11 @@ extension UIViewController {
                 if requests.identifier.contains(alarmID) {
                     UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [requests.identifier])
                     UNUserNotificationCenter.current().removeDeliveredNotifications(withIdentifiers: [requests.identifier])
-                    print ("notification removd is \(requests.identifier)")
                 }
             }
             completion(true)
         }
-        
     }
-    
     
     func removeAllPendingNotificationsForsfagb(alarmID: String) {
         UNUserNotificationCenter.current().getPendingNotificationRequests { requests in
@@ -43,7 +40,6 @@ extension UIViewController {
                 if requests.identifier.contains(alarmID) {
                     UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [requests.identifier])
                     UNUserNotificationCenter.current().removeDeliveredNotifications(withIdentifiers: [requests.identifier])
-                    print ("notification removd is \(requests.identifier)")
                 }
             }
         }
@@ -64,12 +60,10 @@ extension UIViewController {
         //if one time set day as today
         if alarm.repeating.isEqualToString(find: "One time alarm") {
             appDelegate?.scheduleNotification(weekday: Calendar.current.component(.weekday, from: Date()), hour: hour, minute: minutes, body: alarm.caption, contentIdentifier: alarm.identifier, time: alarm.caption)
-            print ("One time alarm - \(hour):\(minutes)")
         } else {
             for weekDayBool in alarm.repeatDays {
                 if weekDayBool == true {
                     appDelegate?.scheduleNotification(weekday: weekDay, hour: hour, minute: minutes, body: alarm.caption, contentIdentifier: "\(alarm.identifier)\(weekDay)", time: alarm.caption)
-                    print ("repeat alarm \(hour):\(minutes) \(weekDay)")
                 }
                 weekDay += 1
             }

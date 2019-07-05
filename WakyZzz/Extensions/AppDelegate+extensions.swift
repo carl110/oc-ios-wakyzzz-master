@@ -44,7 +44,6 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
     
         //if app in background disable onetime alarm and update table
         if state == .background {
-            print ("background touched")
             disableOneTimeAlarm(id: response.notification.request.identifier)
             //fetch updated alarm data for table
             ((window!.rootViewController as? UINavigationController)?.topViewController as? AlarmsViewController)?.loadAlarms()
@@ -52,7 +51,6 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         
         //if app inactive disable if onetimealarm
         if state == .inactive {
-            print ("inactive touched")
             disableOneTimeAlarm(id: response.notification.request.identifier)
         }
         
@@ -197,11 +195,6 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
                                               options: [])
         
         notificationCenter.setNotificationCategories([category])
-        //
-        //        if weekday == nil {
-        //            CoreDataManager.shared.turnOffOneTimeAlarm(id: contentIdentifier)
-        //            print ("alrm switched off")
-        //        }
     }
     
     //timer notification set after snooze action
