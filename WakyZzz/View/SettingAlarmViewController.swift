@@ -125,8 +125,8 @@ class SettingAlarmViewController: UIViewController, UITableViewDelegate, UITable
     func addAlarmtoPreviouseViewController() {
         DispatchQueue.main.async { [weak self] in
             //add alarm as per date picker time
-            self?.alarm?.setTime(date: self?.datePicker.date)
-            self?.delegate?.alarmViewControllerDone(alarm: self?.alarm!)
+            self?.alarm?.setTime(date: self!.datePicker.date)
+            self?.delegate?.alarmViewControllerDone(alarm: self!.alarm!)
             //go back to alarm view
             self?.presentingViewController?.dismiss(animated: true, completion: nil)
         }
