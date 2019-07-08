@@ -85,6 +85,28 @@ class CoreDataManager {
         }
     }
     
+    func deleteAllAlarms() {
+        //Remove all alarms saved with coreData
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
+            return
+        }
+        let context = appDelegate.persistentContainer.viewContext
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>()
+        fetchRequest.entity = NSEntityDescription.entity(forEntityName: "WakyZzz", in: context)
+        fetchRequest.includesPropertyValues = false
+        do {
+            let results = try context.fetch(fetchRequest) as! [NSManagedObject]
+            for result in results {
+                context.delete(result)
+            }
+            try context.save()
+            
+        } catch {
+            
+            print("fetch error -\(error.localizedDescription)")
+        }
+    }
+    
     func deleteAlarm(id: String) {
         let appDelegate =
             UIApplication.shared.delegate as? AppDelegate
