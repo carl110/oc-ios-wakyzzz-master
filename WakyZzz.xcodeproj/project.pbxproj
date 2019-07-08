@@ -16,7 +16,6 @@
 		0424EB6B20BEF96400E15E46 /* Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0424EB6A20BEF96400E15E46 /* Action.swift */; };
 		0424EB6D20BF022900E15E46 /* AlarmTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0424EB6C20BF022900E15E46 /* AlarmTableViewCell.swift */; };
 		0424EB6F20BF0FAE00E15E46 /* SettingAlarmViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0424EB6E20BF0FAE00E15E46 /* SettingAlarmViewController.swift */; };
-		891A508822CFC0D000391EAB /* scarySound.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 891A508722CFC0D000391EAB /* scarySound.mp3 */; };
 		891A508C22CFC1F800391EAB /* alarmSound2.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 891A508922CFC1F800391EAB /* alarmSound2.mp3 */; };
 		891A508D22CFC1F800391EAB /* alarmSound3.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 891A508A22CFC1F800391EAB /* alarmSound3.mp3 */; };
 		891A509022CFC37400391EAB /* howl.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 891A508F22CFC37300391EAB /* howl.mp3 */; };
@@ -27,6 +26,7 @@
 		89318ECE22C4FA4A004205F4 /* UIDatePicker+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89318ECD22C4FA4A004205F4 /* UIDatePicker+extensions.swift */; };
 		89BA115922C0C219007CF134 /* WakyZzz.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 89BA115722C0C219007CF134 /* WakyZzz.xcdatamodeld */; };
 		89BA115B22C0C230007CF134 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89BA115A22C0C230007CF134 /* CoreDataManager.swift */; };
+		89D9362F22D34FC400ABAEFF /* scarySound.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 89D9362E22D34FC400ABAEFF /* scarySound.mp3 */; };
 		89E11E3F22CA620F004DD603 /* AppDelegate+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89E11E3E22CA620F004DD603 /* AppDelegate+extensions.swift */; };
 /* End PBXBuildFile section */
 
@@ -42,7 +42,6 @@
 		0424EB6A20BEF96400E15E46 /* Action.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Action.swift; sourceTree = "<group>"; };
 		0424EB6C20BF022900E15E46 /* AlarmTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmTableViewCell.swift; sourceTree = "<group>"; };
 		0424EB6E20BF0FAE00E15E46 /* SettingAlarmViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingAlarmViewController.swift; sourceTree = "<group>"; };
-		891A508722CFC0D000391EAB /* scarySound.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = scarySound.mp3; path = ../../../../Downloads/scarySound.mp3; sourceTree = "<group>"; };
 		891A508922CFC1F800391EAB /* alarmSound2.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = alarmSound2.mp3; sourceTree = "<group>"; };
 		891A508A22CFC1F800391EAB /* alarmSound3.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = alarmSound3.mp3; sourceTree = "<group>"; };
 		891A508F22CFC37300391EAB /* howl.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = howl.mp3; sourceTree = "<group>"; };
@@ -53,6 +52,7 @@
 		89318ECD22C4FA4A004205F4 /* UIDatePicker+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIDatePicker+extensions.swift"; sourceTree = "<group>"; };
 		89BA115822C0C219007CF134 /* WakyZzz.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = WakyZzz.xcdatamodel; sourceTree = "<group>"; };
 		89BA115A22C0C230007CF134 /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
+		89D9362E22D34FC400ABAEFF /* scarySound.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = scarySound.mp3; sourceTree = "<group>"; };
 		89E11E3E22CA620F004DD603 /* AppDelegate+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppDelegate+extensions.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -142,10 +142,10 @@
 		89BA115522C0C1C5007CF134 /* Sounds */ = {
 			isa = PBXGroup;
 			children = (
+				89D9362E22D34FC400ABAEFF /* scarySound.mp3 */,
 				891A508922CFC1F800391EAB /* alarmSound2.mp3 */,
 				891A508A22CFC1F800391EAB /* alarmSound3.mp3 */,
 				891A508F22CFC37300391EAB /* howl.mp3 */,
-				891A508722CFC0D000391EAB /* scarySound.mp3 */,
 			);
 			path = Sounds;
 			sourceTree = "<group>";
@@ -220,7 +220,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				891A509022CFC37400391EAB /* howl.mp3 in Resources */,
-				891A508822CFC0D000391EAB /* scarySound.mp3 in Resources */,
+				89D9362F22D34FC400ABAEFF /* scarySound.mp3 in Resources */,
 				0424EB5E20BEF89100E15E46 /* LaunchScreen.storyboard in Resources */,
 				891A508C22CFC1F800391EAB /* alarmSound2.mp3 in Resources */,
 				0424EB5B20BEF89100E15E46 /* Assets.xcassets in Resources */,
