@@ -28,7 +28,6 @@
 		89BA115B22C0C230007CF134 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89BA115A22C0C230007CF134 /* CoreDataManager.swift */; };
 		89D9362F22D34FC400ABAEFF /* scarySound.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 89D9362E22D34FC400ABAEFF /* scarySound.mp3 */; };
 		89D9363A22D362FB00ABAEFF /* WakyZzzTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89D9363922D362FB00ABAEFF /* WakyZzzTests.swift */; };
-		89D9364422D368A100ABAEFF /* AlarmTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89D9364322D368A100ABAEFF /* AlarmTests.swift */; };
 		89D9364622D36A2B00ABAEFF /* AlarmSetUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89D9364522D36A2B00ABAEFF /* AlarmSetUp.swift */; };
 		89E11E3F22CA620F004DD603 /* AppDelegate+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89E11E3E22CA620F004DD603 /* AppDelegate+extensions.swift */; };
 /* End PBXBuildFile section */
@@ -69,7 +68,6 @@
 		89D9363722D362FB00ABAEFF /* WakyZzzTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WakyZzzTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		89D9363922D362FB00ABAEFF /* WakyZzzTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WakyZzzTests.swift; sourceTree = "<group>"; };
 		89D9363B22D362FB00ABAEFF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		89D9364322D368A100ABAEFF /* AlarmTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmTests.swift; sourceTree = "<group>"; };
 		89D9364522D36A2B00ABAEFF /* AlarmSetUp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmSetUp.swift; sourceTree = "<group>"; };
 		89E11E3E22CA620F004DD603 /* AppDelegate+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppDelegate+extensions.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -192,7 +190,6 @@
 			children = (
 				89D9363922D362FB00ABAEFF /* WakyZzzTests.swift */,
 				89D9363B22D362FB00ABAEFF /* Info.plist */,
-				89D9364322D368A100ABAEFF /* AlarmTests.swift */,
 				89D9364522D36A2B00ABAEFF /* AlarmSetUp.swift */,
 			);
 			path = WakyZzzTests;
@@ -326,7 +323,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				89D9363A22D362FB00ABAEFF /* WakyZzzTests.swift in Sources */,
-				89D9364422D368A100ABAEFF /* AlarmTests.swift in Sources */,
 				89D9364622D36A2B00ABAEFF /* AlarmSetUp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -418,6 +414,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -471,6 +468,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -489,7 +487,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.openclassrooms.WakyZzz;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -507,7 +505,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.openclassrooms.WakyZzz;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};

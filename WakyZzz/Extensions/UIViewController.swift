@@ -33,18 +33,6 @@ extension UIViewController {
         }
     }
     
-    func removeAllPendingNotificationsForsfagb(alarmID: String) {
-        UNUserNotificationCenter.current().getPendingNotificationRequests { requests in
-            //for all notifications that contain the alarm ID -> remove
-            for requests in requests {
-                if requests.identifier.contains(alarmID) {
-                    UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [requests.identifier])
-                    UNUserNotificationCenter.current().removeDeliveredNotifications(withIdentifiers: [requests.identifier])
-                }
-            }
-        }
-    }
-    
     func setLocalNotification(_ alarm: Alarm) {
         let appDelegate = UIApplication.shared.delegate as? AppDelegate
         

@@ -11,6 +11,7 @@ import UIKit
 
 extension String {
     
+    //compares string value
     func isEqualToString(find: String) -> Bool {
         return String(format: self) == find
     }

@@ -1,4 +1,4 @@
-//
+
 //  CoreDataTests.swift
 //  WakyZzzTests
 //
@@ -12,10 +12,12 @@ import UserNotifications
 @testable import WakyZzz
 
 class AlarmSetUp: XCTestCase {
-
+    
     var coreDataManager: CoreDataManager!
     let center = UNUserNotificationCenter.current()
     let alarm = Alarm()
+    let avc = AlarmsViewController()
+    let appDelegate = AppDelegate()
     
     override func setUp() {
         coreDataManager = CoreDataManager.shared
@@ -23,25 +25,27 @@ class AlarmSetUp: XCTestCase {
         coreDataManager.deleteAllAlarms()
         center.removeAllPendingNotificationRequests()
     }
-
+    
     func saveAlarm() {
+        
+        print ("save alarm")
         
         alarm.time = 28800
         alarm.enabled = true
         alarm.repeatDays = [false, false, false, false, false, false, false]
- 
+        
         
         let alarm1: () = coreDataManager.saveAlarm(time: Int32(alarm.time),
-                                             enabled: alarm.enabled,
-                                             sun: alarm.repeatDays[0],
-                                             mon: alarm.repeatDays[1],
-                                             tue: alarm.repeatDays[2],
-                                             wed: alarm.repeatDays[3],
-                                             thu: alarm.repeatDays[4],
-                                             fri: alarm.repeatDays[5],
-                                             sat: alarm.repeatDays[6],
-                                             identifier: alarm.identifier)
-
+                                                   enabled: alarm.enabled,
+                                                   sun: alarm.repeatDays[0],
+                                                   mon: alarm.repeatDays[1],
+                                                   tue: alarm.repeatDays[2],
+                                                   wed: alarm.repeatDays[3],
+                                                   thu: alarm.repeatDays[4],
+                                                   fri: alarm.repeatDays[5],
+                                                   sat: alarm.repeatDays[6],
+                                                   identifier: alarm.identifier)
+        
         //check alarm calculated this is a one time alarm
         XCTAssertEqual(alarm.repeating, "One time alarm")
         
@@ -51,14 +55,16 @@ class AlarmSetUp: XCTestCase {
         //checks ID is calculated to the right format
         XCTAssertEqual(alarm.identifier, Date().string(format: "MMMddyyyyhhmmss"))
     }
-
-    func notifications() {
-        let avc = AlarmsViewController()
+    
+    func addNotifications() {
+        
+        print ("add notification")
+        
         var notificationID = ""
         avc.setLocalNotification(alarm)
-
+        
         center.getPendingNotificationRequests { (notifications) in
-           
+            
             //check there is a localnotification
             XCTAssertNotNil(notifications)
             for item in notifications {
@@ -69,14 +75,47 @@ class AlarmSetUp: XCTestCase {
             XCTAssertEqual(notificationID, self.alarm.identifier)
         }
     }
-
+    
+    func removeLocalNotification() {
+        
+        print ("remove local notification")
+        avc.removeAllPendingNotifications(alarmID: alarm.identifier) {_ in }
+        
+        center.getPendingNotificationRequests { (notifications) in
+            
+            //check notification is now empty
+            XCTAssertEqual(notifications.count, 0)
+            
+        }
+    }
+    
+    func disableOneTimeAlarm() {
+        
+        print ("disableOneTimeAlarm")
+        appDelegate.disableOneTimeAlarm(id: alarm.identifier)
+        
+        center.getPendingNotificationRequests { (notifications) in
+            
+            //check notification is now empty
+            XCTAssertEqual(notifications.count, 0)
+            
+        }
+        
+    }
+    
     func testRunInOrder() {
         saveAlarm()
-        notifications()
+        addNotifications()
+        removeLocalNotification()
+        addNotifications()
+        disableOneTimeAlarm()
+        addNotifications()
         removeAllAlarmData()
     }
     
     func removeAllAlarmData() {
+        
+        print ("removeAllAlarmData")
         coreDataManager.deleteAllAlarms()
         center.removeAllPendingNotificationRequests()
         XCTAssertEqual(coreDataManager.fetchAlarmData()?.count, 0)
