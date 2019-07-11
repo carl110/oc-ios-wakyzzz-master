@@ -28,6 +28,7 @@ class AlarmSetUp: XCTestCase {
         //remove all saved alarms
         coreDataManager.deleteAllAlarms()
         center.removeAllPendingNotificationRequests()
+        coreDataManager.deleteAllAlarms()
     }
     
     func saveAlarm() {
@@ -79,7 +80,7 @@ class AlarmSetUp: XCTestCase {
         XCTAssertNotNil(alarm2)
         
         loadAlarmsCalculateOneTimeAlarms()
-
+        
         //checks ID is calculated to the right format
         XCTAssertEqual(alarmSingular.identifier, Date().string(format: "MMMddyyyyhhmmss"), "This ID should be in the format Month, day, year, hour, minute, seconds")
     }
@@ -114,11 +115,8 @@ class AlarmSetUp: XCTestCase {
                 repeatAlarm += 1
             }
         }
-        
         XCTAssertEqual(oneTimeAlarm, 1, "There should be 1 One time alarm")
-        
         XCTAssertEqual(repeatAlarm, 1, "There should be 1 repeating alarm")
-
     }
     
     func addNotifications() {
@@ -127,9 +125,11 @@ class AlarmSetUp: XCTestCase {
         let expN = expectation(description: "Add Notifications")
         center.getPendingNotificationRequests { (notifications) in
             
+            print ("add notification closure")
+            
             //check there is a localnotification
             XCTAssertEqual(notifications.count, 3, "There should be 3 local notifications set")
-
+            
             for item in notifications {
                 
                 if item.identifier.count == 15 {
@@ -143,56 +143,45 @@ class AlarmSetUp: XCTestCase {
             XCTAssertEqual(self.repeatAlarmCharacterCount, 2, "There should be 2 repeat alarms")
             expN.fulfill()
         }
-        
         waitForExpectations(timeout: 1)
-        
-        
     }
     
     func disableOneTimeAlarm() {
         print ("disableOneTimeAlarm")
         let expO = expectation(description: "Disable one time alarms")
         for item in alarms {
-                appDelegate.disableOneTimeAlarm(id: item.identifier)
+            appDelegate.disableOneTimeAlarm(id: item.identifier)
         }
         
         //reload notifications
         center.removeAllPendingNotificationRequests()
         loadAlarms()
         avc.setLocalNotification(alarmSingular)
-        
         center.getPendingNotificationRequests { (notifications) in
             
-            print ("disableonetimealarmclosure")
             //check notification contains 1
             XCTAssertEqual(notifications.count, 2, "Notfications should only have removed the one time alarm")
             
             //check only repeating alarm exists
             XCTAssertNotEqual(self.alarmSingular.repeating, "One time alarm", "Remaining alarm should be a repeat alarm")
+            expO.fulfill()
         }
-        
-        expO.fulfill()
-        
         waitForExpectations(timeout: 1)
-        
     }
     
     func removeLocalNotification() {
         print ("remove local notification")
         let exp = expectation(description: "Remove local notifications")
-        avc.removeAllPendingNotifications(alarmID: alarmSingular.identifier) {_ in }
+        center.removeAllPendingNotificationRequests()
         center.getPendingNotificationRequests { (notifications) in
-            
-            print ("remove local notificationclosure")
             
             //check notification is now empty
             XCTAssertEqual(notifications.count, 0)
+            exp.fulfill()
         }
-        exp.fulfill()
-        
         waitForExpectations(timeout: 1)
     }
-
+    
     func testRunInOrder() {
         saveAlarm()
         addNotifications()
@@ -202,13 +191,9 @@ class AlarmSetUp: XCTestCase {
     }
     
     func removeAllAlarmData() {
-        
         print ("removeAllAlarmData")
         coreDataManager.deleteAllAlarms()
         center.removeAllPendingNotificationRequests()
         XCTAssertEqual(coreDataManager.fetchAlarmData()?.count, 0)
-        center.getPendingNotificationRequests { (notifications) in
-            XCTAssertEqual(notifications.count, 0)
-        }
     }
 }
