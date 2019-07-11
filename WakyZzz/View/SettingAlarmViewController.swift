@@ -95,7 +95,8 @@ class SettingAlarmViewController: UIViewController, UITableViewDelegate, UITable
                 if sucess {
                     DispatchQueue.main.async {
                         //update changes to alarm
-                        CoreDataManager.shared.updateAlarmRepeatDays(id: self!.alarm!.identifier, time: self!.getTime(date: self!.datePicker.date),
+                        CoreDataManager.shared.updateAlarmRepeatDays(id: self!.alarm!.identifier,
+                                                                     time: self!.getTime(date: self!.datePicker.date),
                                                                      sun: self!.alarm!.repeatDays[0],
                                                                      mon: self!.alarm!.repeatDays[1],
                                                                      tue: self!.alarm!.repeatDays[2],

@@ -15,12 +15,13 @@ class AlarmSetUp: XCTestCase {
     
     var coreDataManager: CoreDataManager!
     let center = UNUserNotificationCenter.current()
-    let alarm = Alarm()
+    let alarmSingular = Alarm()
+    var alarm: Alarm?
     var alarms = [Alarm]()
     let avc = AlarmsViewController()
     let appDelegate = AppDelegate()
-    var oneTimeAlarm = 0
-    var repeatAlarm = 0
+    var oneTimeAlarmCharacterCount = 0
+    var repeatAlarmCharacterCount = 0
     
     override func setUp() {
         coreDataManager = CoreDataManager.shared
@@ -33,41 +34,43 @@ class AlarmSetUp: XCTestCase {
         
         print ("save alarm")
         
-        alarm.time = 28800
-        alarm.enabled = true
-        alarm.repeatDays = [false, false, false, false, false, false, false]
+        alarmSingular.time = 28800
+        alarmSingular.enabled = true
+        alarmSingular.repeatDays = [false, false, false, false, false, false, false]
         
-        let alarm1: () = coreDataManager.saveAlarm(time: Int32(alarm.time),
-                                                   enabled: alarm.enabled,
-                                                   sun: alarm.repeatDays[0],
-                                                   mon: alarm.repeatDays[1],
-                                                   tue: alarm.repeatDays[2],
-                                                   wed: alarm.repeatDays[3],
-                                                   thu: alarm.repeatDays[4],
-                                                   fri: alarm.repeatDays[5],
-                                                   sat: alarm.repeatDays[6],
-                                                   identifier: alarm.identifier)
+        let alarm1: () = coreDataManager.saveAlarm(time: Int32(alarmSingular.time),
+                                                   enabled: alarmSingular.enabled,
+                                                   sun: alarmSingular.repeatDays[0],
+                                                   mon: alarmSingular.repeatDays[1],
+                                                   tue: alarmSingular.repeatDays[2],
+                                                   wed: alarmSingular.repeatDays[3],
+                                                   thu: alarmSingular.repeatDays[4],
+                                                   fri: alarmSingular.repeatDays[5],
+                                                   sat: alarmSingular.repeatDays[6],
+                                                   identifier: alarmSingular.identifier)
+        avc.setLocalNotification(alarmSingular)
         
         //check alarm calculated this is a one time alarm
-        XCTAssertEqual(alarm.repeating, "One time alarm", "This should show as a one time alarm")
+        XCTAssertEqual(alarmSingular.repeating, "One time alarm", "This should show as a one time alarm")
         
-        alarm.time = 45000
-        alarm.enabled = true
-        alarm.repeatDays = [false, true, false, true, false, false, false]
+        alarmSingular.time = 45000
+        alarmSingular.enabled = true
+        alarmSingular.repeatDays = [false, true, false, true, false, false, false]
         
-        let alarm2: () = coreDataManager.saveAlarm(time: Int32(alarm.time),
-                                                   enabled: alarm.enabled,
-                                                   sun: alarm.repeatDays[0],
-                                                   mon: alarm.repeatDays[1],
-                                                   tue: alarm.repeatDays[2],
-                                                   wed: alarm.repeatDays[3],
-                                                   thu: alarm.repeatDays[4],
-                                                   fri: alarm.repeatDays[5],
-                                                   sat: alarm.repeatDays[6],
-                                                   identifier: alarm.identifier)
+        let alarm2: () = coreDataManager.saveAlarm(time: Int32(alarmSingular.time),
+                                                   enabled: alarmSingular.enabled,
+                                                   sun: alarmSingular.repeatDays[0],
+                                                   mon: alarmSingular.repeatDays[1],
+                                                   tue: alarmSingular.repeatDays[2],
+                                                   wed: alarmSingular.repeatDays[3],
+                                                   thu: alarmSingular.repeatDays[4],
+                                                   fri: alarmSingular.repeatDays[5],
+                                                   sat: alarmSingular.repeatDays[6],
+                                                   identifier: alarmSingular.identifier)
+        avc.setLocalNotification(alarmSingular)
         
         //check alarm calculated this is not a one time alarm
-        XCTAssertNotEqual(alarm.repeating, "One time alarm", "This should be a repeating alarm")
+        XCTAssertNotEqual(alarmSingular.repeating, "One time alarm", "This should be a repeating alarm")
         
         //check alarm exists on CoreData
         XCTAssertNotNil(alarm1)
@@ -78,7 +81,7 @@ class AlarmSetUp: XCTestCase {
         loadAlarmsCalculateOneTimeAlarms()
 
         //checks ID is calculated to the right format
-        XCTAssertEqual(alarm.identifier, Date().string(format: "MMMddyyyyhhmmss"), "This ID should be in the format Month, day, year, hour, minute, seconds")
+        XCTAssertEqual(alarmSingular.identifier, Date().string(format: "MMMddyyyyhhmmss"), "This ID should be in the format Month, day, year, hour, minute, seconds")
     }
     
     func loadAlarms() {
@@ -120,46 +123,74 @@ class AlarmSetUp: XCTestCase {
     
     func addNotifications() {
         print ("add notification")
-        avc.setLocalNotification(alarm)
+        
+        let expN = expectation(description: "Add Notifications")
         center.getPendingNotificationRequests { (notifications) in
             
             //check there is a localnotification
-            XCTAssertEqual(notifications.count, 2, "There should be 2 local notifications set")
+            XCTAssertEqual(notifications.count, 3, "There should be 3 local notifications set")
 
             for item in notifications {
-
-                //does notification ID = alarm ID
-                XCTAssertEqual(item.identifier, self.alarm.identifier, "The alarm ID and the notification ID should be the same")
+                
+                if item.identifier.count == 15 {
+                    self.oneTimeAlarmCharacterCount += 1
+                } else if item.identifier.count == 16 {
+                    self.repeatAlarmCharacterCount += 1
+                }
             }
+            XCTAssertEqual(self.oneTimeAlarmCharacterCount, 1, "There should be 1 one time alarm")
+            
+            XCTAssertEqual(self.repeatAlarmCharacterCount, 2, "There should be 2 repeat alarms")
+            expN.fulfill()
         }
+        
+        waitForExpectations(timeout: 1)
+        
+        
     }
     
     func disableOneTimeAlarm() {
         print ("disableOneTimeAlarm")
+        let expO = expectation(description: "Disable one time alarms")
         for item in alarms {
-            if item.repeating.isEqualToString(find: "One time alarm") {
                 appDelegate.disableOneTimeAlarm(id: item.identifier)
-            }
         }
+        
+        //reload notifications
+        center.removeAllPendingNotificationRequests()
+        loadAlarms()
+        avc.setLocalNotification(alarmSingular)
+        
         center.getPendingNotificationRequests { (notifications) in
             
+            print ("disableonetimealarmclosure")
             //check notification contains 1
-            XCTAssertEqual(notifications.count, 1, "Notfications should only have removed the one time alarm")
+            XCTAssertEqual(notifications.count, 2, "Notfications should only have removed the one time alarm")
             
             //check only repeating alarm exists
-            XCTAssertNotEqual(self.alarm.repeating, "One time alarm", "Remaining alarm should be a repeat alarm")
+            XCTAssertNotEqual(self.alarmSingular.repeating, "One time alarm", "Remaining alarm should be a repeat alarm")
         }
+        
+        expO.fulfill()
+        
+        waitForExpectations(timeout: 1)
         
     }
     
     func removeLocalNotification() {
         print ("remove local notification")
-        avc.removeAllPendingNotifications(alarmID: alarm.identifier) {_ in }
+        let exp = expectation(description: "Remove local notifications")
+        avc.removeAllPendingNotifications(alarmID: alarmSingular.identifier) {_ in }
         center.getPendingNotificationRequests { (notifications) in
+            
+            print ("remove local notificationclosure")
             
             //check notification is now empty
             XCTAssertEqual(notifications.count, 0)
         }
+        exp.fulfill()
+        
+        waitForExpectations(timeout: 1)
     }
 
     func testRunInOrder() {
