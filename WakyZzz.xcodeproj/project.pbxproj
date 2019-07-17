@@ -62,6 +62,7 @@
 		89318EC922C39A9B004205F4 /* UIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewController.swift; sourceTree = "<group>"; };
 		89318ECB22C3A5B9004205F4 /* Date+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+extensions.swift"; sourceTree = "<group>"; };
 		89318ECD22C4FA4A004205F4 /* UIDatePicker+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIDatePicker+extensions.swift"; sourceTree = "<group>"; };
+		8984468122DF5B9700B40658 /* WakyZzz Project Code Details.docx */ = {isa = PBXFileReference; lastKnownFileType = file; path = "WakyZzz Project Code Details.docx"; sourceTree = "<group>"; };
 		89BA115822C0C219007CF134 /* WakyZzz.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = WakyZzz.xcdatamodel; sourceTree = "<group>"; };
 		89BA115A22C0C230007CF134 /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		89D9362E22D34FC400ABAEFF /* scarySound.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = scarySound.mp3; sourceTree = "<group>"; };
@@ -110,6 +111,7 @@
 		0424EB5220BEF89000E15E46 /* WakyZzz */ = {
 			isa = PBXGroup;
 			children = (
+				8984468022DF5B8400B40658 /* App Documents */,
 				89318EC422C24160004205F4 /* Extensions */,
 				89BA115522C0C1C5007CF134 /* Sounds */,
 				89BA115122C0C16F007CF134 /* Model */,
@@ -135,6 +137,14 @@
 				89E11E3E22CA620F004DD603 /* AppDelegate+extensions.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		8984468022DF5B8400B40658 /* App Documents */ = {
+			isa = PBXGroup;
+			children = (
+				8984468122DF5B9700B40658 /* WakyZzz Project Code Details.docx */,
+			);
+			path = "App Documents";
 			sourceTree = "<group>";
 		};
 		89BA115122C0C16F007CF134 /* Model */ = {
