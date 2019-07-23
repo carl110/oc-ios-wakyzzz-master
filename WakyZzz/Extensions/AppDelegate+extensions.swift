@@ -16,7 +16,9 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
     func disableOneTimeAlarm(id: String) {
         let check = CoreDataManager.shared.fetchAlarmFromID(id: id)
         for i in check! {
-            if i.sun && i.mon && i.tue && i.wed && i.thu && i.fri && i.sat == false {
+            let weekArray = [i.mon, i.tue, i.wed, i.thu, i.fri, i.sat, i.sun]
+            //check all array items are false
+            if weekArray.allSatisfy({$0 == false}) {
                 //update bool for enabled on alarm
                 CoreDataManager.shared.turnOffOneTimeAlarm(id: id)
             }
